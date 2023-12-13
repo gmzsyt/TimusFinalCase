@@ -7,10 +7,10 @@ import { DbModule } from './postgres/postgres.module';
 import { FactoryDetailModule } from './factories/factoryDetail/factoryDetail.module';
 import { FactoryListModule } from './factories/factoryList/factoryList.module';
 
+
 @Module({
   imports: [ElasticsearchModule, AuthModule, DbModule, FactoryListModule, FactoryDetailModule],
   controllers: [AppController],
   providers: [AppService],
-
 })
 export class AppModule {}
