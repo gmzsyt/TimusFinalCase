@@ -1,5 +1,3 @@
-// elasticsearch/elasticsearch.module.ts
-
 import { Module } from '@nestjs/common';
 import { ElasticsearchModule as NestElasticsearchModule, ElasticsearchService as NestElasticsearchService } from '@nestjs/elasticsearch';
 import { ElasticsearchService } from './elasticsearch.service'; 
