@@ -77,6 +77,25 @@ async checkUsernameUniqueness(username: string): Promise<boolean> {
     }
   }
 
+  async getUserDetails(username: string): Promise<any> {
+    try {
+      const userSearchResult = await this.elasticsearchService.searchUser(username);
+
+      if (userSearchResult.hits.total.value > 0) {
+        const userDetails = userSearchResult.hits.hits[0]._source;
+        return { success: true, userDetails };
+      } else {
+        return { success: false, message: 'User not found' };
+      }
+    } catch (error) {
+      console.error('Error getting user details:', error);
+      return { success: false, message: 'An error occurred while getting user details' };
+    }
+  }
+
+
+  
+
   async deleteUser(username: string): Promise<any> {
     try {
       // Checks the existence of the user.
