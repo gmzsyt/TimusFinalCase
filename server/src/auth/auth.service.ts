@@ -93,9 +93,6 @@ async checkUsernameUniqueness(username: string): Promise<boolean> {
     }
   }
 
-
-  
-
   async deleteUser(username: string): Promise<any> {
     try {
       // Checks the existence of the user.
