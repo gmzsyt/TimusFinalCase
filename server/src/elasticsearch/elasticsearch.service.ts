@@ -15,7 +15,6 @@ export class ElasticsearchService {
           },
         },
       });
-  
       return result;
     } catch (error) {
       console.error('Error during searchUser:', error);
@@ -55,6 +54,4 @@ export class ElasticsearchService {
       throw error; 
     }
   }
-
-
 }
