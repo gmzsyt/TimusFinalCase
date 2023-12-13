@@ -1,8 +1,8 @@
-import { JwtAuthGuard } from './jwt/jwt-auth.guard';
+import { JwtAuthGuard } from './jwt/jwtAuthGuard';
 import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '../elasticsearch/elasticsearch.service';
-import { UserRegisterDTO } from './dtos/user-register.dto';
-import { UserLoginDTO } from './dtos/user-login.dto';
+import { UserRegisterDTO } from './dtos/userRegister.dto';
+import { UserLoginDTO } from './dtos/userLogin.dto';
 import { JwtService } from './jwt/jwt.service';
 
 @Injectable()
