@@ -28,8 +28,13 @@ async login(@Body() userLoginDTO: UserLoginDTO): Promise<any> {
     return this.authService.getUserDetails(username);
   }
   
-   // !!put   
-
+  @Put('updateUser/:username')
+  async updateUser(
+    @Param('username') currentUsername: string,
+    @Body() userUpdateDTO: UserRegisterDTO
+  ): Promise<any> {
+    return this.authService.updateUser(currentUsername, userUpdateDTO);
+  }    
 
   @Delete('deleteUser/:username') 
   async deleteUser(@Param('username') username: string): Promise<any> {

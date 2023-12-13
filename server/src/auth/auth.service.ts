@@ -93,6 +93,48 @@ async checkUsernameUniqueness(username: string): Promise<boolean> {
     }
   }
 
+async updateUser(currentUsername: string, userUpdateDTO: UserRegisterDTO): Promise<any> {
+  try {
+    // Check if the user exists
+    const isUserExist = await this.checkUsernameExistence(currentUsername);
+
+    // If the user exists, update the user
+    if (isUserExist) {
+      // Check if the new username is provided and unique
+      if (userUpdateDTO.username && currentUsername !== userUpdateDTO.username) {
+        const isUsernameUnique = await this.checkUsernameUniqueness(userUpdateDTO.username);
+
+        if (!isUsernameUnique) {
+          return { success: false, message: 'New username is not unique' };
+        }
+      }
+
+      // Update user fields if they are provided in the DTO
+      const { username, email, password, role } = userUpdateDTO;
+      const updatedFields: { [key: string]: any } = {};
+
+      if (username) updatedFields.username = username;
+      if (email) updatedFields.email = email;
+      if (password) updatedFields.password = password;
+      if (role) updatedFields.role = role;
+
+      await this.elasticsearchService.updateUser(currentUsername, updatedFields);
+
+      return { success: true, message: 'User updated successfully' };
+    } else {
+      // If the user does not exist, consider adding a new user
+      // You can handle this case based on your application logic
+      // For example, you can add a new user or return an error message
+      // based on your requirements.
+      return { success: false, message: 'User does not exist. Consider adding a new user.' };
+    }
+  } catch (error) {
+    console.error('Error updating user:', error);
+    return { success: false, message: 'An error occurred while updating user' };
+  }
+}
+
+
   async deleteUser(username: string): Promise<any> {
     try {
       // Checks the existence of the user.
