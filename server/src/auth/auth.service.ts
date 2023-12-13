@@ -1,20 +1,29 @@
+import { JwtAuthGuard } from './jwt/jwt-auth.guard';
 import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '../elasticsearch/elasticsearch.service';
 import { UserRegisterDTO } from './dtos/user-register.dto';
 import { UserLoginDTO } from './dtos/user-login.dto';
+import { JwtService } from './jwt/jwt.service';
+
 @Injectable()
 export class AuthService {
-  constructor(private readonly elasticsearchService: ElasticsearchService) {}
+  constructor(
+    private readonly elasticsearchService: ElasticsearchService,
+    private readonly jwtService: JwtService, 
+  ) {}
 
   async login(userLoginDTO: UserLoginDTO): Promise<any> {
     try {
       const { username, password } = userLoginDTO;
       const userSearchResult = await this.elasticsearchService.searchUser(username);
-  
+
       const isValidUser = this.validateUser(userSearchResult, username, password);
-  
+
       if (isValidUser) {
-        return { success: true, message: 'Login successful' };
+        const accessToken = this.jwtService.generateToken({ username }); // Creating JWT
+        const refreshToken = this.jwtService.generateRefreshToken({ username }); // Refresh Token is being created
+
+        return { success: true, message: 'Login successful', accessToken, refreshToken };
       } else {
         return { success: false, message: 'Invalid credentials' };
       }
@@ -25,9 +34,11 @@ export class AuthService {
   }
 
   private validateUser(userSearchResult: any, username: string, password: string): boolean {
-    return userSearchResult.hits.total.value > 0 &&
+    return (
+      userSearchResult.hits.total.value > 0 &&
       userSearchResult.hits.hits[0]._source.username === username &&
-      userSearchResult.hits.hits[0]._source.password === password;
+      userSearchResult.hits.hits[0]._source.password === password
+    );
   }
   
   async register(userDTO: UserRegisterDTO): Promise<any> {
