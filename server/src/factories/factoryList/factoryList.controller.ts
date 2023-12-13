@@ -3,6 +3,7 @@ import { FactoryListCreateDTO } from './dtos/factoryListCreate.dto';
 import { FactoryListUpdateDTO } from './dtos/factoryListUpdate.dto';
 import { FactoryListService } from './factoryList.service';
 
+@Controller('factoryList')
 export class FactoryListController {
   constructor(private readonly factoryListService: FactoryListService) {}
 
