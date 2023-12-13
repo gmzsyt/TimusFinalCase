@@ -1,4 +1,9 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+<<<<<<< Updated upstream
+import { FactoryListService } from './factory-list.service';
+=======
+import { FactoryListService } from './factoryList.service';
+>>>>>>> Stashed changes
 import { FactoryListCreateDTO } from './dtos/factoryListCreate.dto';
 import { FactoryListUpdateDTO } from './dtos/factoryListUpdate.dto';
 import { FactoryListService } from './factoryList.service';
