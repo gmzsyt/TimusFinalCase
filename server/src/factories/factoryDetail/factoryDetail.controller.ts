@@ -1,8 +1,8 @@
 // src/factories/factory-detail/factory-detail.controller.ts
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
-import { FactoryDetailService } from './factory-detail.service';
-import { FactoryDetailCreateDTO } from './dtos/factory-detail-create.dto';
-import { FactoryDetailUpdateDTO } from './dtos/factory-detail-update.dto';
+import { FactoryDetailService } from './factoryDetail.service';
+import { FactoryDetailCreateDTO } from './dtos/factoryDetailCreate.dto';
+import { FactoryDetailUpdateDTO } from './dtos/factoryDetailUpdate.dto';
 
 @Controller('api/factory-detail')
 export class FactoryDetailController {

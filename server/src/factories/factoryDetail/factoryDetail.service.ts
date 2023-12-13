@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PG_CONNECTION } from '../../../constants';
 import { Pool, PoolClient } from 'pg';
-import { FactoryDetailCreateDTO } from './dtos/factory-detail-create.dto';
-import { FactoryDetailUpdateDTO } from './dtos/factory-detail-update.dto';
+import { FactoryDetailCreateDTO } from './dtos/factoryDetailCreate.dto';
+import { FactoryDetailUpdateDTO } from './dtos/factoryDetailUpdate.dto';
 
 @Injectable()
 export class FactoryDetailService {
