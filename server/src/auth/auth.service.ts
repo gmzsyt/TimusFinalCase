@@ -20,10 +20,15 @@ export class AuthService {
       const isValidUser = this.validateUser(userSearchResult, username, password);
 
       if (isValidUser) {
-        const accessToken = this.jwtService.generateToken({ username }); // Creating JWT
-        const refreshToken = this.jwtService.generateRefreshToken({ username }); // Refresh Token is being created
-
-        return { success: true, message: 'Login successful', accessToken, refreshToken };
+        const accessToken = this.jwtService.generateToken({ username });
+        const refreshToken = this.jwtService.generateRefreshToken({ username });
+    
+        return {
+          success: true,
+          message: 'Login successful',
+          accessToken,
+          refreshToken,
+        };
       } else {
         return { success: false, message: 'Invalid credentials' };
       }

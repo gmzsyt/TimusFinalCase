@@ -1,17 +1,17 @@
-import { Controller, Post, Get, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, Delete, Put, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserLoginDTO } from './dtos/user-login.dto';
 import { UserRegisterDTO } from './dtos/user-register.dto';
-
+import { JwtAuthGuard } from './jwt/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-async login(@Body() userLoginDTO: UserLoginDTO): Promise<any> {
-  return this.authService.login(userLoginDTO);
-}
+  async login(@Body() userLoginDTO: UserLoginDTO): Promise<any> {
+    return this.authService.login(userLoginDTO);
+  }
 
   @Post('register')
   async register(@Body() userDTO: UserRegisterDTO): Promise<any> {
@@ -19,25 +19,33 @@ async login(@Body() userLoginDTO: UserLoginDTO): Promise<any> {
   }
 
   @Get('getAllUsers')
-  async getAllUsers(): Promise<any> {
+  @UseGuards(JwtAuthGuard)
+  async getAllUsers(@Req() request): Promise<any> {
+    const user = request.user;
     return this.authService.getAllUsers();
   }
 
   @Get('getUserDetails/:username')
+  @UseGuards(JwtAuthGuard)
   async getUserDetails(@Param('username') username: string): Promise<any> {
     return this.authService.getUserDetails(username);
   }
-  
+
   @Put('updateUser/:username')
+  @UseGuards(JwtAuthGuard)
   async updateUser(
     @Param('username') currentUsername: string,
-    @Body() userUpdateDTO: UserRegisterDTO
+    @Body() userUpdateDTO: UserRegisterDTO,
+    @Req() request,
   ): Promise<any> {
+    const user = request.user;
     return this.authService.updateUser(currentUsername, userUpdateDTO);
-  }    
+  }
 
-  @Delete('deleteUser/:username') 
-  async deleteUser(@Param('username') username: string): Promise<any> {
-  return this.authService.deleteUser(username);
- }
+  @Delete('deleteUser/:username')
+  @UseGuards(JwtAuthGuard)
+  async deleteUser(@Param('username') username: string, @Req() request): Promise<any> {
+    const user = request.user;
+    return this.authService.deleteUser(username);
+  }
 }
