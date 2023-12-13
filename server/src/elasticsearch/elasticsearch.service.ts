@@ -56,51 +56,5 @@ export class ElasticsearchService {
     }
   }
 
-  async updateUser(username: string, updates: Record<string, any>): Promise<any> {
-    try {
-      const result = await this.elasticsearchService.updateByQuery({
-        index: 'users',
-        body: {
-          query: {
-            match: { username },
-          },
-          script: {
-            source: Object.keys(updates)
-              .map((key) => `ctx._source.${key} = params.${key}`)
-              .join(';'),
-            params: updates,
-          },
-        },
-      });
 
-      return result;
-    } catch (error) {
-      console.error('Error during updateUser:', error);
-      if (error.meta && error.meta.body) {
-        console.error('Elasticsearch Error:', error.meta.body.error);
-      }
-      throw error; 
-    }
-  }
-
-  async deleteUser(username: string): Promise<any> {
-    try {
-      const result = await this.elasticsearchService.deleteByQuery({
-        index: 'users',
-        body: {
-          query: {
-            match: { username },
-          },
-        },
-      });
-
-      return result;
-    } catch (error) {
-      console.error('Error during deleteUser:', error);
-      if (error.meta && error.meta.body) {
-        console.error('Elasticsearch Error:', error.meta.body.error);
-      }
-      throw error; 
-    }
-  }
 }
