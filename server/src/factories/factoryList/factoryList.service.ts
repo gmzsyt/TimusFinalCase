@@ -17,16 +17,12 @@ export class FactoryListService {
   }
 
   async findById(id: number): Promise<any> {
-    const existingRecord = await this.findById(id);
-    if (!existingRecord) {
+    const existingRecord = await this.pool.query('SELECT * FROM factory_list WHERE id = $1', [id]);
+    if (!existingRecord.rows[0]) {
       throw new NotFoundException(`Factory with ID ${id} not found`);
     }
-    try {
-      const result = await this.pool.query
-      ('SELECT * FROM factory_list WHERE id = $1', [id]);
-      return result.rows[0];
-    } catch{error}
-  }
+    return existingRecord.rows[0];
+}
 
   async create(factoryListCreateDTO: FactoryListCreateDTO): Promise<any> {
     try {
@@ -50,10 +46,11 @@ export class FactoryListService {
 
   async update(id: number, factoryListUpdateDTO: FactoryListUpdateDTO): Promise<any> {
     const existingRecord = await this.findById(id);
-
+  
     if (!existingRecord) {
       throw new NotFoundException(`Factory with ID ${id} not found`);
     }
+  
     try {
       const result = await this.pool.query(
         'UPDATE factory_list SET company_name = $1, membership_start_date = $2, membership_end_date = $3, employee_count = $4, free_member = $5 WHERE id = $6 RETURNING *',
