@@ -1,13 +1,16 @@
-import { IsString, IsDate, IsNumber, IsBoolean } from 'class-validator';
+import { IsString, IsNumber, IsBoolean } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 
 export class FactoryListCreateDTO {
   @IsString()
   company_name: string;
 
-  @IsDate()
+  @Transform(({ value }) => new Date(value)) 
+  @Type(() => Date)
   membership_start_date: Date;
 
-  @IsDate()
+  @Transform(({ value }) => new Date(value)) 
+  @Type(() => Date)
   membership_end_date: Date;
 
   @IsNumber()
