@@ -4,6 +4,7 @@ import { Pool, PoolClient } from 'pg';
 import { FactoryListCreateDTO } from './dtos/factoryListCreate.dto';
 import { FactoryListUpdateDTO } from './dtos/factoryListUpdate.dto';
 import { error } from 'console';
+import { DeleteDTO } from './dtos/factoryListDelete.dto';
 
 @Injectable()
 export class FactoryListService {
@@ -13,7 +14,10 @@ export class FactoryListService {
     try {
       const result = await this.pool.query('SELECT * FROM factory_list');
       return result.rows;
-    } catch{error}
+    } catch (error) {
+      console.error('An error occurred while fetching the id:', error);
+        throw new Error('An error occurred while creating the factory.');
+    }
   }
 
   async findById(id: number): Promise<any> {
@@ -70,13 +74,15 @@ export class FactoryListService {
     }
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(deleteDTO: DeleteDTO): Promise<void> {
+    const { id } = deleteDTO;
+
     const existingRecord = await this.findById(id);
-  
+
     if (!existingRecord) {
       throw new NotFoundException(`Factory with ID ${id} not found`);
     }
-  
+
     try {
       await this.pool.query('DELETE FROM factory_list WHERE id = $1', [id]);
     } catch (error) {
