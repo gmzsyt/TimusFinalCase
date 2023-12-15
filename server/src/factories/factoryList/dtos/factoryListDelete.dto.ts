@@ -1,8 +1,6 @@
+import { IsNumber } from 'class-validator';
+
 export class DeleteDTO {
-    id: number;
-  
-    constructor(id: number) {
-      this.id = id;
-    }
-  }
-  
+  @IsNumber()
+  id: number;
+}
