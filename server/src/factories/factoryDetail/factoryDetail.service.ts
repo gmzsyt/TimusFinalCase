@@ -19,11 +19,13 @@ export class FactoryDetailService {
 
   async findById(id: number): Promise<any> {
     const existingRecord = await this.pool.query('SELECT * FROM factory_detail WHERE id = $1', [id]);
+  
     if (!existingRecord.rows[0]) {
-      throw new NotFoundException(`Factory with ID ${id} not found`);
+      throw new NotFoundException(`FactoryDetail with ID ${id} not found`);
     }
     return existingRecord.rows[0];
-}
+  }
+  
 
 async create(factoryId: number, factoryDetailCreateDTO: FactoryDetailCreateDTO): Promise<any> {
   try {

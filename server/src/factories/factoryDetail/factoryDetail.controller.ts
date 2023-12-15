@@ -12,7 +12,7 @@ export class FactoryDetailController {
     return this.factoryDetailService.findAll(factoryId);
   }
 
-  @Get(':id')
+  @Get('findById/:id')
   findById(@Param('id') id: number) {
     return this.factoryDetailService.findById(id);
   }
