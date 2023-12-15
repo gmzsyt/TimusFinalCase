@@ -48,7 +48,6 @@ async addColumn(
   }
 }
 
-
 @Delete('removeColumnFactoryListTable/:columnName')
   async removeColumn(@Param('columnName') columnName: string): Promise<any> {
     try {
@@ -59,6 +58,4 @@ async addColumn(
       throw new Error('An error occurred while removing the column.');
     }
   }
-
-
 }
