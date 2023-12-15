@@ -14,7 +14,10 @@ export class FactoryListService {
     try {
       const result = await this.pool.query('SELECT * FROM factory_list');
       return result.rows;
-    } catch{error}
+    } catch (error) {
+      console.error('An error occurred while fetching the id:', error);
+        throw new Error('An error occurred while creating the factory.');
+    }
   }
 
   async findById(id: number): Promise<any> {

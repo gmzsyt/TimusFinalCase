@@ -28,15 +28,15 @@ export const dbProvider = {
       console.log("tablo oluşturuldu 1")
 
       await client.query(`
-        CREATE TABLE IF NOT EXISTS factory_detail (
-          id SERIAL PRIMARY KEY,
-          factory_id INTEGER REFERENCES factory_list(id),
-          using_unit TEXT,
-          date_range TSRANGE,
-          usage_kw INTEGER,
-          usage_fee NUMERIC,
-          discounted_price BOOLEAN
-        );
+      CREATE TABLE IF NOT EXISTS factory_detail (
+        id SERIAL PRIMARY KEY,
+        factory_id INTEGER REFERENCES factory_list(id),
+        using_unit TEXT,
+        date_range DATERANGE,
+        usage_kw INTEGER,
+        usage_fee NUMERIC,
+        discounted_price BOOLEAN
+      );
       `);
       console.log("tablo oluşturuldu 2")
 
