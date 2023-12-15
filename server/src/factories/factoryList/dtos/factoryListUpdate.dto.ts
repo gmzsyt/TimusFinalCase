@@ -1,3 +1,4 @@
+import { Transform, Type } from 'class-transformer';
 import { IsString, IsDate, IsNumber, IsBoolean, IsOptional } from 'class-validator';
 
 export class FactoryListUpdateDTO {
@@ -7,10 +8,14 @@ export class FactoryListUpdateDTO {
 
   @IsOptional()
   @IsDate()
+  @Transform(({ value }) => value ? new Date(value) : undefined)
+  @Type(() => Date)
   membership_start_date?: Date;
 
   @IsOptional()
   @IsDate()
+  @Transform(({ value }) => value ? new Date(value) : undefined)
+  @Type(() => Date)
   membership_end_date?: Date;
 
   @IsOptional()
