@@ -1,10 +1,11 @@
-// src/factories/factory-detail/factory-detail.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { FactoryDetailService } from './factoryDetail.service';
 import { FactoryDetailCreateDTO } from './dtos/factoryDetailCreate.dto';
 import { FactoryDetailUpdateDTO } from './dtos/factoryDetailUpdate.dto';
+import { JwtAuthGuard } from 'src/auth/jwt/jwtAuthGuard';
 
-@Controller('api/factory-detail')
+@Controller('factoryDetail')
+@UseGuards(JwtAuthGuard)
 export class FactoryDetailController {
   constructor(private readonly factoryDetailService: FactoryDetailService) {}
 
@@ -13,7 +14,7 @@ export class FactoryDetailController {
     return this.factoryDetailService.findAll(factoryId);
   }
 
-  @Get(':id')
+  @Get('findById/:id')
   findById(@Param('id') id: number) {
     return this.factoryDetailService.findById(id);
   }
@@ -32,4 +33,16 @@ export class FactoryDetailController {
   delete(@Param('id') id: number) {
     return this.factoryDetailService.delete(id);
   }
+
+  /*@Delete('removeColumnFactoryDetailTable/:columnName')
+  async removeColumn(@Param('columnName') columnName: string): Promise<any> {
+    try {
+      await this.factoryDetailService.removeColumn(columnName);
+      return { message: `Column '${columnName}' removed successfully.` };
+    } catch (error) {
+      console.error('An error occurred while removing the column:', error);
+      throw new Error('An error occurred while removing the column.');
+    }
+  } */
 }
+
