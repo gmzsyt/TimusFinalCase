@@ -33,4 +33,32 @@ export class FactoryListController {
     const deleteDTO: DeleteDTO = { id }; 
     await this.factoryListService.delete(deleteDTO);
   }
+
+  @Post('addColumnFactoryListTable')
+async addColumn(
+  @Body() columnInfo: { columnName: string, columnType: string },
+): Promise<any> {
+  try {
+    const { columnName, columnType } = columnInfo;
+    await this.factoryListService.addColumn(columnName, columnType);
+    return { message: `Column '${columnName}' added successfully.` };
+  } catch (error) {
+    console.error('An error occurred while adding the column:', error);
+    throw new Error('An error occurred while adding the column.');
+  }
+}
+
+
+@Delete('removeColumnFactoryListTable/:columnName')
+  async removeColumn(@Param('columnName') columnName: string): Promise<any> {
+    try {
+      await this.factoryListService.removeColumn(columnName);
+      return { message: `Column '${columnName}' removed successfully.` };
+    } catch (error) {
+      console.error('An error occurred while removing the column:', error);
+      throw new Error('An error occurred while removing the column.');
+    }
+  }
+
+
 }
