@@ -3,6 +3,7 @@ import { PG_CONNECTION } from '../../../constants'
 import { Pool, PoolClient } from 'pg';
 import { FactoryListCreateDTO } from './dtos/factoryListCreate.dto';
 import { FactoryListUpdateDTO } from './dtos/factoryListUpdate.dto';
+import { error } from 'console';
 
 @Injectable()
 export class FactoryListService {
@@ -29,9 +30,9 @@ export class FactoryListService {
   }
 
   async create(factoryListCreateDTO: FactoryListCreateDTO): Promise<any> {
-    const client: PoolClient = await this.pool.connect();
+    //const client: PoolClient = await this.pool.connect();
     try {
-      const result = await client.query(
+      const result = await this.pool.query(
         'INSERT INTO factory_list (company_name, membership_start_date, membership_end_date, employee_count, free_member) VALUES ($1, $2, $3, $4, $5) RETURNING *',
         [
           factoryListCreateDTO.company_name,
@@ -42,9 +43,8 @@ export class FactoryListService {
         ],
       );
       return result.rows[0];
-    } finally {
-      client.release();
-    }
+    } 
+    catch{error}
   }
 
   async update(id: number, factoryListUpdateDTO: FactoryListUpdateDTO): Promise<any> {
