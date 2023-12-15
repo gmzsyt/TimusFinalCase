@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe } from '@nestjs/common';
 import { FactoryListCreateDTO } from './dtos/factoryListCreate.dto';
 import { FactoryListUpdateDTO } from './dtos/factoryListUpdate.dto';
 import { FactoryListService } from './factoryList.service';
+import { DeleteDTO } from './dtos/factoryListDelete.dto';
 
 @Controller('factoryList')
 export class FactoryListController {
@@ -28,7 +29,8 @@ export class FactoryListController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<void> {
-    return this.factoryListService.delete(+id);
+  async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    const deleteDTO: DeleteDTO = { id }; 
+    await this.factoryListService.delete(deleteDTO);
   }
 }
