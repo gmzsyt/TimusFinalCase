@@ -97,4 +97,57 @@ async update(id: number, factoryDetailUpdateDTO: FactoryDetailUpdateDTO): Promis
       throw new Error('An error occurred while deleting the factory.');
     }
   }
-}
+
+  async addColumn(columnName: string, columnType: string): Promise<void> {
+    const tableName = 'factory_detail';
+    try {
+      const checkQuery = `
+        SELECT EXISTS (
+          SELECT 1
+          FROM information_schema.columns
+          WHERE table_name = '${tableName}' AND column_name = '${columnName}'
+        ) as column_exists;
+      `;
+      const checkResult = await this.pool.query(checkQuery);
+
+      if (checkResult.rows[0].column_exists) {
+        console.log(`Sütun '${columnName}' zaten '${tableName}' tablosunda mevcut`);
+      }
+      const addQuery = `ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnType}`;
+      await this.pool.query(addQuery);
+
+      console.log(`Sütun '${columnName}' başarıyla '${tableName}' tablosuna eklendi`);
+    } catch (error) {
+      console.error('Sütun eklenirken bir hata oluştu:', error);
+      throw new Error('Sütun eklenirken bir hata oluştu.');
+    }
+  }
+
+//   async removeColumn(columnName: string): Promise<void> {
+//     const tableName = 'factory_detail';
+//     try {
+//         const checkQuery = `
+//             SELECT EXISTS (
+//                 SELECT 1
+//                 FROM information_schema.columns
+//                 WHERE table_name = '${tableName}' AND column_name = '${columnName}'
+//             ) as column_exists;
+//         `;
+//         const checkResult = await this.pool.query(checkQuery);
+
+//         if (!checkResult.rows[0].column_exists) {
+//             console.log(`Sütun '${columnName}' '${tableName}' tablosunda mevcut değil`);
+//             throw new NotFoundException(`Sütun '${columnName}' bulunamadı.`);
+//         }
+
+//         // Sütunu kaldır
+//         const removeQuery = `ALTER TABLE ${tableName} DROP COLUMN ${columnName}`;
+//         await this.pool.query(removeQuery);
+
+//         console.log(`Sütun '${columnName}' başarıyla '${tableName}' tablosundan kaldırıldı`);
+//     } catch (error) {
+//         console.error('Sütun kaldırma sırasında bir hata oluştu:', error);
+//         throw new Error('Sütun kaldırma sırasında bir hata oluştu.');
+//     }
+// }
+    }
