@@ -2,8 +2,10 @@ import { Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe } from '@
 import { FactoryDetailService } from './factoryDetail.service';
 import { FactoryDetailCreateDTO } from './dtos/factoryDetailCreate.dto';
 import { FactoryDetailUpdateDTO } from './dtos/factoryDetailUpdate.dto';
+import { JwtAuthGuard } from 'src/auth/jwt/jwtAuthGuard';
 
 @Controller('factoryDetail')
+
 export class FactoryDetailController {
   constructor(private readonly factoryDetailService: FactoryDetailService) {}
 
@@ -42,19 +44,5 @@ export class FactoryDetailController {
       throw new Error('An error occurred while removing the column.');
     }
   } */
-
-  @Post('addColumnFactoryDetailTable')
-  async addColumnFactoryDetailTable(
-  @Body() columnInfo: { columnName: string, columnType: string },
-): Promise<any> {
-  try {
-    const { columnName, columnType } = columnInfo;
-    await this.factoryDetailService.addColumn(columnName, columnType);
-    return { message: `Column '${columnName}' added successfully.` };
-  } catch (error) {
-    console.error('An error occurred while adding the column:', error);
-    throw new Error('An error occurred while adding the column.');
-  }
-}
 }
 

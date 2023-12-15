@@ -12,7 +12,16 @@ export class JwtService {
   }
 
   verifyToken(token: string): any {
-    return jwt.verify(token, this.secretKey);
+    try {
+      const decoded = jwt.verify(token, this.secretKey);
+      if (decoded && decoded.exp && decoded.exp * 1000 > Date.now()) {
+        return decoded;
+      } else {
+        throw new Error('Token has expired');
+      }
+    } catch (error) {
+      throw new Error('Token could not be verified');
+    }
   }
 
   generateRefreshToken(payload: any): string {
