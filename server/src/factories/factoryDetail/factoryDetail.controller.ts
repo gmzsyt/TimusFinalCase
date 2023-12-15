@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe } from '@nestjs/common';
 import { FactoryDetailService } from './factoryDetail.service';
 import { FactoryDetailCreateDTO } from './dtos/factoryDetailCreate.dto';
 import { FactoryDetailUpdateDTO } from './dtos/factoryDetailUpdate.dto';
@@ -31,4 +31,30 @@ export class FactoryDetailController {
   delete(@Param('id') id: number) {
     return this.factoryDetailService.delete(id);
   }
+
+  /*@Delete('removeColumnFactoryDetailTable/:columnName')
+  async removeColumn(@Param('columnName') columnName: string): Promise<any> {
+    try {
+      await this.factoryDetailService.removeColumn(columnName);
+      return { message: `Column '${columnName}' removed successfully.` };
+    } catch (error) {
+      console.error('An error occurred while removing the column:', error);
+      throw new Error('An error occurred while removing the column.');
+    }
+  } */
+
+  @Post('addColumnFactoryDetailTable')
+  async addColumnFactoryDetailTable(
+  @Body() columnInfo: { columnName: string, columnType: string },
+): Promise<any> {
+  try {
+    const { columnName, columnType } = columnInfo;
+    await this.factoryDetailService.addColumn(columnName, columnType);
+    return { message: `Column '${columnName}' added successfully.` };
+  } catch (error) {
+    console.error('An error occurred while adding the column:', error);
+    throw new Error('An error occurred while adding the column.');
+  }
 }
+}
+
