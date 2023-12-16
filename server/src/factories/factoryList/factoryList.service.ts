@@ -3,7 +3,6 @@ import { PG_CONNECTION } from '../../../constants'
 import { Pool, PoolClient } from 'pg';
 import { FactoryListCreateDTO } from './dtos/factoryListCreate.dto';
 import { FactoryListUpdateDTO } from './dtos/factoryListUpdate.dto';
-import { error } from 'console';
 import { DeleteDTO } from './dtos/factoryListDelete.dto';
 
 @Injectable()
