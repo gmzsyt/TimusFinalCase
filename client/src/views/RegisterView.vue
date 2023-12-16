@@ -1,16 +1,24 @@
+
 <template>
     <div class="d-flex align-center justify-center" style="height: 100vh">
       <v-sheet width="400" class="mx-auto">
-        <v-form @submit.prevent="login">
-          <v-text-field v-model="username" label="User Name" outlined></v-text-field>
-          <v-text-field v-model="password" label="Password" outlined type="password"></v-text-field>
-          <v-checkbox v-model="rememberMe" label="Remember me"></v-checkbox>
+        <v-form @submit.prevent="register">
+          <v-text-field v-model="user.username" label="User Name" outlined></v-text-field>
+          <v-text-field v-model="user.email" label="Email" outlined type="email"></v-text-field>
+          <v-text-field v-model="user.password" label="Password" outlined type="password"></v-text-field>
   
-          <v-btn type="submit" color="primary" block class="mt-4">Sign in</v-btn>
+          <v-select
+            v-model="user.role"
+            :items="roles"
+            label="Role"
+            outlined
+          ></v-select>
+  
+          <v-btn type="submit" color="primary" block class="mt-4">Register</v-btn>
         </v-form>
   
         <div class="mt-4">
-          <p class="text-body-2">Don't have an account? <a href="#">Sign Up</a></p>
+          <p class="text-body-2">Already have an account? <router-link to="/login">Login</router-link></p>
         </div>
       </v-sheet>
     </div>
@@ -20,31 +28,19 @@
   export default {
     data() {
       return {
-        username: '',
-        password: '',
-        rememberMe: false,
+        user: {
+          username: '',
+          email: '',
+          password: '',
+          role: '',
+        },
+        roles: ['Admin', 'Editor'], // Add more roles as needed
       };
     },
     methods: {
-      login() {
-        // Your login logic here
-        console.log('Logging in with:', this.username, this.password);
-  
-        // Check if "Remember Me" is selected
-        if (this.rememberMe) {
-          // Save username and password in a cookie
-          this.saveCredentialsToCookie();
-        }
-      },
-      saveCredentialsToCookie() {
-        // Save username and password to a cookie
-        document.cookie = `username=${this.username};password=${this.password};expires=${this.getCookieExpirationDate()};path=/`;
-      },
-      getCookieExpirationDate() {
-        const expirationDate = new Date();
-        // Set the cookie expiration to 30 days from now
-        expirationDate.setDate(expirationDate.getDate() + 30);
-        return expirationDate.toUTCString();
+      register() {
+        // Your registration logic here
+        console.log('Registering with:', this.user);
       },
     },
   };
