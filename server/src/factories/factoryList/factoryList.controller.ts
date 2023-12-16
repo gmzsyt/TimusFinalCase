@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { FactoryListCreateDTO } from './dtos/factoryListCreate.dto';
 import { FactoryListUpdateDTO } from './dtos/factoryListUpdate.dto';
 import { FactoryListService } from './factoryList.service';
 import { DeleteDTO } from './dtos/factoryListDelete.dto';
+import { JwtAuthGuard } from 'src/auth/jwt/jwtAuthGuard';
 
 @Controller('factoryList')
+@UseGuards(JwtAuthGuard)
 export class FactoryListController {
   constructor(private readonly factoryListService: FactoryListService) {}
 
