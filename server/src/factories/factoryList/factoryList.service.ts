@@ -3,6 +3,10 @@ import { PG_CONNECTION } from '../../../constants'
 import { Pool, PoolClient } from 'pg';
 import { FactoryListCreateDTO } from './dtos/factoryListCreate.dto';
 import { FactoryListUpdateDTO } from './dtos/factoryListUpdate.dto';
+<<<<<<< Updated upstream
+=======
+import { DeleteDTO } from './dtos/factoryListDelete.dto';
+>>>>>>> Stashed changes
 
 @Injectable()
 export class FactoryListService {
