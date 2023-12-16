@@ -3,7 +3,7 @@
     <v-app>
       <v-app-bar app dark color="primary">
         <!-- Sol tarafta bulunan logo -->
-        <v-img src="@/assets/logos.png" class="mr-4 align-start"></v-img>
+        <v-img src="@/assets//logos.png" class="mr-4 align-start"></v-img>
 
         <!-- Orta kısımda yer alacak başlık -->
         <v-toolbar-title>Vuetify App</v-toolbar-title>
