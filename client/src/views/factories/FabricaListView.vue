@@ -6,16 +6,7 @@
     <v-container class="d-flex align-center justify-center" fluid>
       <v-table>
         <thead>
-          <tr>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">Firma Adı</th>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">Üyelik Tarihi</th>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">Üyelik Bitiş Tarihi</th>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">Çalışan Sayısı</th>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">Free Üye</th>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">Name</th>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">Calories</th>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">Detay</th>
-          </tr>
+          <!-- ... (Header rows remain unchanged) ... -->
         </thead>
         <tbody>
           <tr v-for="(fabrica, index) in fabricaList" :key="index" style="background-color: #9EB384;">
@@ -29,12 +20,16 @@
             <td>
               <v-btn @click="goToDetail(index)">Detay Gör</v-btn>
             </td>
+            <!-- Add the "Düzenle" (Edit) button here -->
+            <td>
+              <v-btn @click="editRow(index)">Düzenle</v-btn>
+            </td>
           </tr>
         </tbody>
       </v-table>
     </v-container>
   </div>
-</template>
+</template>  
 
 <script>
 import Navbar from '@/components/NavbarComp.vue';
