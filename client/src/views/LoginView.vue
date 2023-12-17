@@ -1,51 +1,51 @@
 <template>
-  <div class="d-flex align-center justify-center" style="height: 100vh">
-    <v-sheet width="400" class="mx-auto">
-      <v-form @submit.prevent="login">
-        <v-text-field v-model="username" label="User Name" outlined></v-text-field>
-        <v-text-field v-model="password" label="Password" outlined type="password"></v-text-field>
-        <v-checkbox v-model="rememberMe" label="Remember me"></v-checkbox>
-
-        <v-btn type="submit" color="primary" block class="mt-4">Sign in</v-btn>
-      </v-form>
-
-      <div class="mt-4">
-        <p class="text-body-2">Don't have an account? <router-link to="/register">Sign Up</router-link></p>
-      </div>
-    </v-sheet>
-  </div>
+  <v-container>
+    <v-row justify="center">
+      <v-col cols="12" sm="8" md="4">
+        <v-card>
+          <v-card-title class="text-center">Login</v-card-title>
+          <v-card-text>
+            <v-form @submit.prevent="login">
+              <v-text-field v-model="username" label="Username" outlined></v-text-field>
+              <v-text-field v-model="password" label="Password" outlined type="password"></v-text-field>
+              <v-btn type="submit" color="primary" block>Login</v-btn>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       username: '',
       password: '',
-      rememberMe: false,
-    };
+    }
   },
   methods: {
-    login() {
-      // Your login logic here
-      console.log('Logging in with:', this.username, this.password);
+    async login() {
+      try {
+        // Kullanıcı bilgileri (username, password) burada set edilmelidir.
+        const userCredentials = {
+          username: this.username,
+          password: this.password,
+        };
 
-      // Check if "Remember Me" is selected
-      if (this.rememberMe) {
-        // Save username and password in a cookie
-        this.saveCredentialsToCookie();
+        // Backend'e HTTP POST isteği gönderme
+        const response = await axios.post('http://localhost:3000/auth/login', userCredentials);
+
+        // Başarılıysa console'a mesaj yazdırma
+        console.log('Giriş Başarılı:', response.data);
+      } catch (error) {
+        // Hata durumunda console'a mesaj yazdırma
+        console.error('Giriş Hatası:', error.response.data);
       }
     },
-    saveCredentialsToCookie() {
-      // Save username and password to a cookie
-      document.cookie = `username=${this.username};password=${this.password};expires=${this.getCookieExpirationDate()};path=/`;
-    },
-    getCookieExpirationDate() {
-      const expirationDate = new Date();
-      // Set the cookie expiration to 30 days from now
-      expirationDate.setDate(expirationDate.getDate() + 30);
-      return expirationDate.toUTCString();
-    },
-  },
+  }
 };
 </script>
