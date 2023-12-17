@@ -8,7 +8,7 @@
             <v-form @submit.prevent="login">
               <v-text-field v-model="username" label="Username" outlined></v-text-field>
               <v-text-field v-model="password" label="Password" outlined type="password"></v-text-field>
-              <v-btn type="submit" color="primary" block>Login</v-btn>
+              <v-btn type="submit" color="primary" block :disabled="!isLoginFormValid">Login</v-btn>
             </v-form>
           </v-card-text>
         </v-card>
@@ -19,33 +19,43 @@
 
 <script>
 import axios from 'axios';
+import { defineComponent } from 'vue';
+import { useUserStore } from '@/store/modules/user'; 
 
-export default {
+export default defineComponent({
   data() {
     return {
       username: '',
       password: '',
-    }
+    };
+  },
+  computed: {
+    isLoginFormValid() {
+      return this.username.trim() !== '' && this.password.trim() !== '';
+    },
   },
   methods: {
     async login() {
       try {
-        // Kullanıcı bilgileri (username, password) burada set edilmelidir.
         const userCredentials = {
           username: this.username,
           password: this.password,
         };
 
-        // Backend'e HTTP POST isteği gönderme
         const response = await axios.post('http://localhost:3000/auth/login', userCredentials);
 
-        // Başarılıysa console'a mesaj yazdırma
         console.log('Giriş Başarılı:', response.data);
+
+        // Kullanıcı giriş yaptığında store'u güncelle
+        const store = useUserStore();
+        store.setUsername(response.data.username);
+        store.setIsLoggedIn(true);
+
+        this.$router.push('/'); // Anasayfa yolunu uygun bir şekilde güncelleyin
       } catch (error) {
-        // Hata durumunda console'a mesaj yazdırma
         console.error('Giriş Hatası:', error.response.data);
       }
     },
-  }
-};
+  },
+});
 </script>
