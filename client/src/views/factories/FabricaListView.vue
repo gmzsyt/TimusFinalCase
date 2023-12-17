@@ -109,7 +109,7 @@ export default {
   methods: {
     goToDetail(index) {
       // Detay sayfasına yönlendirme
-      this.$router.push('/detail');
+      this.$router.push({ name: 'detail', params: { index } });
     },
   },
 };
