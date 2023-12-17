@@ -17,36 +17,25 @@
   </template>
   
   <script>
-  export default {
-    data() {
-      return {
+
+export default {
+  data() {
+    return {
+      user: {
         username: '',
         password: '',
-        rememberMe: false,
-      };
+      },
+    };
+  },
+  methods: {
+    register() {
+      // Your login logic here
+
+      // Assuming a successful login, navigate to the home page
+      // Replace '/home' with the actual path to your home page
+      this.$router.push('/');
     },
-    methods: {
-      login() {
-        // Your login logic here
-        console.log('Logging in with:', this.username, this.password);
-  
-        // Check if "Remember Me" is selected
-        if (this.rememberMe) {
-          // Save username and password in a cookie
-          this.saveCredentialsToCookie();
-        }
-      },
-      saveCredentialsToCookie() {
-        // Save username and password to a cookie
-        document.cookie = `username=${this.username};password=${this.password};expires=${this.getCookieExpirationDate()};path=/`;
-      },
-      getCookieExpirationDate() {
-        const expirationDate = new Date();
-        // Set the cookie expiration to 30 days from now
-        expirationDate.setDate(expirationDate.getDate() + 30);
-        return expirationDate.toUTCString();
-      },
-    },
-  };
-  </script>
+  },
+};
+</script>
   
