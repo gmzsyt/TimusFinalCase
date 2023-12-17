@@ -14,6 +14,7 @@
             <th class="text-left" style="background-color: #CEDEBD; color: white;">Free Üye</th>
             <th class="text-left" style="background-color: #CEDEBD; color: white;">Name</th>
             <th class="text-left" style="background-color: #CEDEBD; color: white;">Calories</th>
+            <th class="text-left" style="background-color: #CEDEBD; color: white;">Detay</th>
           </tr>
         </thead>
         <tbody>
@@ -25,6 +26,9 @@
             <td>{{ fabrica.freeUye }}</td>
             <td>{{ desserts[index].name }}</td>
             <td>{{ desserts[index].calories }}</td>
+            <td>
+              <v-btn @click="goToDetail(index)">Detay Gör</v-btn>
+            </td>
           </tr>
         </tbody>
       </v-table>
@@ -101,6 +105,12 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    goToDetail(index) {
+      // Detay sayfasına yönlendirme
+      this.$router.push({ name: 'detail', params: { index } });
+    },
   },
 };
 </script>
