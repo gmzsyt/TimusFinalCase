@@ -25,24 +25,26 @@
   </template>
   
   <script>
-  export default {
-    data() {
-      return {
-        user: {
-          username: '',
-          email: '',
-          password: '',
-          role: '',
-        },
-        roles: ['Admin', 'Editor'], // Add more roles as needed
-      };
-    },
-    methods: {
-      register() {
-        // Your registration logic here
-        console.log('Registering with:', this.user);
+
+
+export default {
+  data() {
+    return {
+      user: {
+        username: '',
+        password: '',
       },
+    };
+  },
+  methods: {
+    register() {
+      // Your login logic here
+
+      // Assuming a successful login, navigate to the home page
+      // Replace '/home' with the actual path to your home page
+      this.$router.push('/');
     },
-  };
-  </script>
+  },
+};
+</script>
   
