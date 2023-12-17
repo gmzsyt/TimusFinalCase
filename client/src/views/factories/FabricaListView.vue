@@ -1,59 +1,96 @@
 <template>
   <div>
     <Navbar />
-    <h1 class="text-center mt-5">Fabrica List Page</h1>
+    <h1 class="text-center mt-5">Factory List Page</h1>
 
     <v-container class="d-flex align-center justify-center" fluid>
+      <v-btn @click="openAddColumnModal">Add Column</v-btn>
+     
       <v-table>
         <thead>
-          <!-- ... (Header rows remain unchanged) ... -->
+          <tr>
+            <th class="text-left" style="background-color: #CEDEBD; color: white;">
+              company name
+            </th>
+            <th class="text-left" style="background-color: #CEDEBD; color: white;">
+              membership date
+            </th>
+            <th class="text-left" style="background-color: #CEDEBD; color: white;">
+              membership expiration date 
+            </th>
+            <th class="text-left" style="background-color: #CEDEBD; color: white;">
+              number of employees
+            </th>
+            <th class="text-left" style="background-color: #CEDEBD; color: white;">
+              free member
+            </th>
+            <!-- Add new column headers dynamically -->
+            <th v-for="(column, columnIndex) in newColumns" :key="columnIndex" class="text-left" style="background-color: #CEDEBD; color: white;">
+              {{ column.name }}
+            </th>
+          </tr>
         </thead>
         <tbody>
-          <tr v-for="(fabrica, index) in fabricaList" :key="index" style="background-color: #9EB384;">
-            <td>{{ fabrica.firmaAdi }}</td>
-            <td>{{ fabrica.uyelikTarihi }}</td>
-            <td>{{ fabrica.uyelikBitisTarihi }}</td>
-            <td>{{ fabrica.calisanSayisi }}</td>
-            <td>{{ fabrica.freeUye }}</td>
-            <td>{{ desserts[index].name }}</td>
-            <td>{{ desserts[index].calories }}</td>
-            <td>
-              <v-btn @click="goToDetail(index)">Detay Gör</v-btn>
+          <tr v-for="(factory, index) in factoryList" :key="index" style="background-color: #9EB384;">
+            <td>{{ factory.companyName }}</td>
+            <td>{{ factory.membershipStartDate }}</td>
+            <td>{{ factory.membershipEndDate }}</td>
+            <td>{{ factory.employeeCount }}</td>
+            <td>{{ factory.freeMember }}</td>
+            <!-- Display new columns dynamically -->
+            <td v-for="(column, columnIndex) in newColumns" :key="columnIndex">
+              {{ factory[column.name] }}
             </td>
-            <!-- Add the "Düzenle" (Edit) button here -->
             <td>
-              <v-btn @click="editRow(index)">Düzenle</v-btn>
+              <v-btn @click="goToDetail(index)">View Details</v-btn>
+            </td>
+            <!-- Add the "Edit" button here -->
+            <td>
+              <v-btn @click="editRow(index)">Edit</v-btn>
             </td>
           </tr>
         </tbody>
       </v-table>
     </v-container>
+
+    <!-- Add the FactoryListEditModal component -->
+    <factory-list-edit-modal :factory="selectedFactory" ref="editModal" @save-changes="saveChanges"></factory-list-edit-modal>
+    
+    <!-- Add the FactoryListAddColumnModal component -->
+    <factory-list-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-list-add-column-modal>
+    <factory-list-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-list-add-column-modal>
+
   </div>
-</template>  
+</template>
 
 <script>
 import Navbar from '@/components/NavbarComp.vue';
+import FactoryListEditModal from '@/modals/FactoryListEditModal.vue';
+import FactoryListAddColumnModal from '@/modals/FactoryListAddColumnModal.vue';
+
 
 export default {
   components: {
     Navbar,
+    FactoryListEditModal,
+    FactoryListAddColumnModal,
   },
   data() {
     return {
-      fabricaList: [
+      factoryList: [
         {
-          firmaAdi: 'Firma 1',
-          uyelikTarihi: '2023-01-01',
-          uyelikBitisTarihi: '2024-01-01',
-          calisanSayisi: 100,
-          freeUye: false,
+          companyName: 'Firma 1',
+          membershipStartDate: '2023-01-01',
+          membershipEndDate: '2024-01-01',
+          employeeCount: 100,
+          freeMember: false,
         },
         {
-          firmaAdi: 'Firma 2',
-          uyelikTarihi: '2023-02-01',
-          uyelikBitisTarihi: '2024-02-01',
-          calisanSayisi: 50,
-          freeUye: true,
+          companyName: 'Firma 2',
+          membershipStartDate: '2023-02-01',
+          membershipEndDate: '2024-02-01',
+          employeeCount: 50,
+          freeMember: true,
         },
         // ... Diğer fabrikalar
       ],
@@ -99,12 +136,36 @@ export default {
           calories: 518,
         },
       ],
+      newColumns: [], // To store dynamically added columns
     };
   },
   methods: {
     goToDetail(index) {
-      // Detay sayfasına yönlendirme
       this.$router.push('/detail');
+    },
+    editRow(index) {
+      this.selectedFactory = { ...this.factoryList[index] };
+      this.$refs.editModal.dialog = true;
+    },
+    saveChanges(updatedFactory) {
+      const index = this.factoryList.findIndex(f => f.companyName === updatedFactory.companyName);
+      if (index !== -1) {
+        this.$set(this.factoryList, index, { ...updatedFactory });
+      }
+    },
+    openAddColumnModal() {
+      this.$refs.addColumnModal.dialog = true;
+    },
+    addColumn(newColumn) {
+      // Add new column dynamically
+      this.newColumns.push(newColumn);
+      // Update existing factories with the default value for the new column
+      this.factoryList.forEach(factory => {
+        this.$set(factory, newColumn.name, null);
+      });
+    },
+    openAddColumnModal() {
+      this.$refs.addColumnModal.dialog = true;
     },
   },
 };

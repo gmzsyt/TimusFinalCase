@@ -13,7 +13,6 @@
               <th class="text-left" style="background-color: #CEDEBD; color: white;">Çalışan Sayısı</th>
               <th class="text-left" style="background-color: #CEDEBD; color: white;">Free Üye</th>
               <th class="text-left" style="background-color: #CEDEBD; color: white;">Name</th>
-              <th class="text-left" style="background-color: #CEDEBD; color: white;">Calories</th>
             </tr>
           </thead>
           <tbody>
