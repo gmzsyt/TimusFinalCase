@@ -19,35 +19,4 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   // Sayfa özelinde giriş yapma zorunluluğu kontrolü
-//   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-
-//   // Kullanıcı giriş yapmış mı kontrolü
-//   const isLoggedIn = useAuthStore().isLoggedIn; // Değişiklik burada
-
-//   if (requiresAuth && !isLoggedIn) {
-//     // Kullanıcı giriş yapmamış ve giriş yapma zorunluluğu varsa login sayfasına yönlendir
-//     next('/login');
-//   } else {
-//     // Diğer durumlarda normal yönlendirme
-//     next();
-//   }
-// });
-// router.beforeEach((to, from, next) => {
-//   // Sayfa özelinde giriş yapma zorunluluğu kontrolü
-//   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-
-//   // Kullanıcı giriş yapmış mı kontrolü
-//   const isLoggedIn = useAuthStore().isLoggedIn; // Değişiklik burada
-
-//   if (requiresAuth && !isLoggedIn) {
-//     // Kullanıcı giriş yapmamış ve giriş yapma zorunluluğu varsa login sayfasına yönlendir
-//     next('/login');
-//   } else {
-//     // Diğer durumlarda normal yönlendirme
-//     next();
-//   }
-// });
-
 export default router;

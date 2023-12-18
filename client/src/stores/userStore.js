@@ -7,18 +7,20 @@ const useUserStore = defineStore('userStore', {
     userId: null,
     userName: null,
     refreshToken: null,
+    isLogin: false,
   }),
 
   getters: {
     getUserId: (state) => state.userId,
     getUserName: (state) => state.userName,
     getRefreshToken: (state) => state.refreshToken,
-    isLoggedIn: (state) => !!state.userId,  
+    isLoggedIn: (state) => state.isLogin,  
   },
 
   actions: {  
     async login(email, password) {
       const pageStore = usePageStore();
+      
 
       try {
         pageStore.setLoading(true);
@@ -38,7 +40,7 @@ const useUserStore = defineStore('userStore', {
       this.userId = userData.userId;
       this.userName = userData.userName;
       this.refreshToken = userData.refreshToken;
-      this.isLoggedIn = true;
+      this.isLogin = true;
 
     },
     logout() {

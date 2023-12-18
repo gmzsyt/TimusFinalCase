@@ -17,7 +17,7 @@
 </template>
 
 <script>
-
+import useUserStore from './../../stores/userStore'
 export default {
   data() {
     return {

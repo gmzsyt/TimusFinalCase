@@ -9,13 +9,12 @@
 
         <template v-if="isLoggedIn">
           <v-btn :style="{ 'color': 'white', 'background-color': '#435334' }">{{ username }}</v-btn>
-          <v-btn @click="logout" :style="{ 'color': 'white', 'background-color': '#435334' }">Çıkış Yap</v-btn>
+          <v-btn  v-if="isLoggedIn" @click="logout" :style="{ 'color': 'white', 'background-color': '#435334' }">Çıkış Yap</v-btn>
         </template>
 
         <template v-else>
-          <v-btn v-if="username" :style="{ 'color': 'white', 'background-color': '#435334' }">{{ username }}</v-btn>
-          <v-btn @click="goToLogin" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Giriş Yap</v-btn>
-          <v-btn @click="goToRegister" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Kayıt Ol</v-btn>
+          <v-btn v-if="!isLoggedIn" @click="goToLogin" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Giriş Yap</v-btn>
+          <v-btn v-if="!isLoggedIn" @click="goToRegister" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Kayıt Ol</v-btn>
         </template>
 
         <v-btn v-if="isLoggedIn" @click="goToSettings" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Ayarlar</v-btn>
@@ -32,11 +31,14 @@
 <script>
 import useUserStore from '@/stores/userStore';
 
+
 export default {
   setup() {
     const userStore = useUserStore();
+    console.log(userStore.getRefreshToken);
     return {
       username: userStore.getUserName,
+      token: userStore.getRefreshToken,
       isLoggedIn: userStore.isLoggedIn,
     };
   },
@@ -48,7 +50,6 @@ export default {
       this.$router.push('/register');
     },
     logout() {
-      // Kullanıcıyı çıkış yapmış durumuna getir
       this.$store.dispatch('useUserStore/setUserData', null);
       this.$router.push('/login');
     },
@@ -56,7 +57,7 @@ export default {
       this.$router.push('/settings');
     },
     goToDashboard() {
-      this.$router.push('/dashboard');
+      this.$router.push('/fabricaList');
     },
   },
 };
