@@ -46,7 +46,7 @@ export class AuthController {
   @Delete('deleteUser/:username')
   @UseGuards(JwtAuthGuard)
   async deleteUser(@Param('username') username: string, @Req() request): Promise<any> {
-    const user = request.user;
+    const user = request.user;  
     return this.authService.deleteUser(username);
   }
 }

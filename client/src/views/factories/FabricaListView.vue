@@ -67,6 +67,7 @@
 import Navbar from '@/components/NavbarComp.vue';
 import FactoryListEditModal from '@/modals/FactoryListEditModal.vue';
 import FactoryListAddColumnModal from '@/modals/FactoryListAddColumnModal.vue';
+import useFactoryStore from '@/stores/factoryStore';
 
 
 export default {
@@ -136,8 +137,13 @@ export default {
           calories: 518,
         },
       ],
-      newColumns: [], // To store dynamically added columns
+      newColumns: [], 
     };
+  },
+  setup() {
+    const factoryStore = useFactoryStore();
+    factoryStore.getAllFactoryList();
+    console.log("inn")
   },
   methods: {
     goToDetail(index) {

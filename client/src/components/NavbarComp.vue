@@ -1,5 +1,6 @@
 <template>
   <v-container>
+
     <v-app>
       <v-app-bar app dark color="#FAF1E4">
         <v-img src="@/assets/logos.png" class="mr-4 align-start"></v-img>
@@ -8,8 +9,9 @@
         <v-spacer></v-spacer>
 
         <template v-if="isLoggedIn">
-          <v-btn :style="{ 'color': 'white', 'background-color': '#435334' }">{{ username }}</v-btn>
-          <v-btn  v-if="isLoggedIn" @click="logout" :style="{ 'color': 'white', 'background-color': '#435334' }">Çıkış Yap</v-btn>
+
+          <v-btn :style="{ 'color': 'white', 'background-color': '#435334','margin-right': '8px' }">{{ username }}</v-btn>
+          <v-btn  v-if="isLoggedIn" @click="logoutUI" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">Çıkış Yap</v-btn>
         </template>
 
         <template v-else>
@@ -29,6 +31,7 @@
 </template>
 
 <script>
+
 import useUserStore from '@/stores/userStore';
 
 
@@ -36,6 +39,7 @@ export default {
   setup() {
     const userStore = useUserStore();
     console.log(userStore.getRefreshToken);
+    console.log(userStore.getUserName);
     return {
       username: userStore.getUserName,
       token: userStore.getRefreshToken,
@@ -49,8 +53,13 @@ export default {
     goToRegister() {
       this.$router.push('/register');
     },
-    logout() {
-      this.$store.dispatch('useUserStore/setUserData', null);
+
+    logoutUI() {
+      // this.$store.dispatch('useUserStore/setUserData', null);
+      const userStore = useUserStore();
+      userStore.logout();
+      console.log("aaaaaa")
+      console.log(userStore.userName)
       this.$router.push('/login');
     },
     goToSettings() {

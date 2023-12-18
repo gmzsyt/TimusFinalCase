@@ -8,6 +8,7 @@ const useUserStore = defineStore('userStore', {
     userName: null,
     refreshToken: null,
     isLogin: false,
+    token : null,
   }),
 
   getters: {
@@ -15,6 +16,7 @@ const useUserStore = defineStore('userStore', {
     getUserName: (state) => state.userName,
     getRefreshToken: (state) => state.refreshToken,
     isLoggedIn: (state) => state.isLogin,  
+    getToken: (state) => state.token
   },
 
   actions: {  
@@ -38,15 +40,19 @@ const useUserStore = defineStore('userStore', {
     },
     setUserData(userData) {
       this.userId = userData.userId;
-      this.userName = userData.userName;
+
+      this.userName = userData.username;
       this.refreshToken = userData.refreshToken;
       this.isLogin = true;
-
+      this.token = userData.accessToken;
     },
     logout() {
+      console.log("asssssssssss")
       this.userId = null;
       this.userName = null;
       this.refreshToken = null;
+      this.isLogin=false;
+      this.accessToken= null;
     },
   },
 });

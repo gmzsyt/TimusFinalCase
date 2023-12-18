@@ -22,10 +22,10 @@ export class AuthService {
       if (isValidUser) {
         const accessToken = this.jwtService.generateToken({ username });
         const refreshToken = this.jwtService.generateRefreshToken({ username });
-    
         return {
           success: true,
           message: 'Login successful',
+          username,
           accessToken,
           refreshToken,
         };
