@@ -1,14 +1,20 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import vuetify from './plugins/vuetify'
-import { loadFonts } from './plugins/webfontloader'
-import router from './router'
-import { pinia } from './store/pinia'; 
+// main.js
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import { createPinia } from 'pinia';
+import Axios from 'axios';
+import { loadFonts } from './plugins/webfontloader';
+import vuetify from './plugins/vuetify';
 
-loadFonts()
+loadFonts();
 
-createApp(App)
+const app = createApp(App);
+
+app.config.globalProperties.$axios = Axios;
+
+app
   .use(router)
   .use(vuetify)
-  .use(pinia) 
-  .mount('#app')
+  .use(createPinia())
+  .mount('#app');
