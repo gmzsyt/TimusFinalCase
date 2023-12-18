@@ -10,6 +10,7 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() userLoginDTO: UserLoginDTO): Promise<any> {
+    console.log(userLoginDTO)
     return this.authService.login(userLoginDTO);
   }
 

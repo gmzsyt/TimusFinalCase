@@ -5,7 +5,8 @@
         <v-text-field v-model="user.username" label="User Name" outlined></v-text-field>
         <v-text-field v-model="user.password" label="Password" outlined type="password"></v-text-field>
 
-        <v-btn type="submit" color="primary" block class="mt-4">Login</v-btn>
+
+        <v-btn type="submit" color="primary" block class="mt-4 p">Login</v-btn>
       </v-form>
 
       <div class="mt-4">
@@ -16,6 +17,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -26,14 +28,24 @@ export default {
     };
   },
   methods: {
-    login() {
-      // Your login logic here
-      console.log('Logging in with:', this.user);
 
-      // Assuming a successful login, navigate to the home page
-      // Replace '/home' with the actual path to your home page
-      this.$router.push('/');
+    async login() {
+      try {
+        const authStore = useUserStore();
+        await authStore.login(this.user.username, this.user.password);
+        this.$router.push('/');
+      } catch (error) {
+        console.error('Login failed:', error.message);
+      }
     },
   },
 };
 </script>
+
+
+<style scoped>
+.p {
+  padding: 25px;
+  font-size: 1.2rem;
+}
+</style>
