@@ -1,6 +1,10 @@
 <template>
+<<<<<<< Updated upstream
 
   <v-container class="text-center">
+=======
+  <v-container>
+>>>>>>> Stashed changes
     <v-app>
       <v-app-bar app dark color=#FAF1E4>
         <!-- Sol tarafta bulunan logo -->
@@ -13,8 +17,15 @@
         <!-- Sağ tarafta bulunan kullanıcı adı, çıkış yap butonu ve dashboard butonu -->
         <v-spacer></v-spacer>
         <template v-if="isLoggedIn">
+<<<<<<< Updated upstream
           <v-btn :style="{ 'color': 'white', 'background-color': '#435334' }">{{ username }}</v-btn>
           <v-btn @click="logout" :style="{ 'color': 'white', 'background-color': '#435334' }">Çıkış Yap</v-btn>
+=======
+
+
+          <v-btn :style="{ 'color': 'white', 'background-color': '#435334','margin-right': '8px' }">{{ username }}</v-btn>
+          <v-btn  v-if="isLoggedIn" @click="logoutUI" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">Çıkış Yap</v-btn>
+>>>>>>> Stashed changes
         </template>
         <template v-else>
           <v-btn @click="goToLogin" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Login</v-btn>
@@ -35,7 +46,12 @@
 
 <script>
 export default {
+<<<<<<< Updated upstream
   data() {
+=======
+  setup() {
+    const userStore = useUserStore();
+>>>>>>> Stashed changes
     return {
       isLoggedIn: false,
       username: "",
@@ -48,11 +64,21 @@ export default {
     goToRegister() {
       this.$router.push('/register');
     },
+<<<<<<< Updated upstream
     logout() {
       // Çıkış işlemleri
       this.isLoggedIn = false;
       this.username = "";
       // Çıkış işlemi sonrasında kullanıcıyı giriş sayfasına yönlendirin
+=======
+ 
+    logoutUI() {
+      // this.$store.dispatch('useUserStore/setUserData', null);
+      const userStore = useUserStore();
+      userStore.logout();
+      console.log("aaaaaa")
+      console.log(userStore.userName)
+>>>>>>> Stashed changes
       this.$router.push('/login');
     },
 

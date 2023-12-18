@@ -9,6 +9,7 @@
           <!-- ... (Header rows remain unchanged) ... -->
         </thead>
         <tbody>
+<<<<<<< Updated upstream
           <tr v-for="(fabrica, index) in fabricaList" :key="index" style="background-color: #9EB384;">
             <td>{{ fabrica.firmaAdi }}</td>
             <td>{{ fabrica.uyelikTarihi }}</td>
@@ -17,6 +18,18 @@
             <td>{{ fabrica.freeUye }}</td>
             <td>{{ desserts[index].name }}</td>
             <td>{{ desserts[index].calories }}</td>
+=======
+          <tr v-for="(factory, index) in factoryList" :key="index" style="background-color: #9EB384;">
+            <td>{{ factory.company_name }}</td>
+            <td>{{ factory.membership_start_date }}</td>
+            <td>{{ factory.membership_end_date }}</td>
+            <td>{{ factory.employee_count }}</td>
+            <td>{{ factory.free_member }}</td>
+            <!-- Display new columns dynamically -->
+            <td v-for="(column, columnIndex) in newColumns" :key="columnIndex">
+              {{ factory[column.name] }}
+            </td>
+>>>>>>> Stashed changes
             <td>
               <v-btn @click="goToDetail(index)">Detay Gör</v-btn>
             </td>
@@ -39,7 +52,10 @@ export default {
     Navbar,
   },
   data() {
+    
+    const factoryStore = useFactoryStore();
     return {
+<<<<<<< Updated upstream
       fabricaList: [
         {
           firmaAdi: 'Firma 1',
@@ -99,6 +115,9 @@ export default {
           calories: 518,
         },
       ],
+=======
+      factoryList:factoryStore.getFactoryList
+>>>>>>> Stashed changes
     };
   },
   methods: {
