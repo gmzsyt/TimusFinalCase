@@ -1,4 +1,11 @@
 <template>
+  <v-container>
+    <v-app>
+      <v-app-bar app dark color="#FAF1E4">
+        <!-- <v-img src="@/assets/logos.png" class="mr-4 align-start"></v-img> -->
+        <v-toolbar-title>Vuetify App</v-toolbar-title>
+        
+        <v-spacer></v-spacer>
 
   <v-container class="text-center">
     <v-app>
@@ -13,8 +20,9 @@
         <!-- Sağ tarafta bulunan kullanıcı adı, çıkış yap butonu ve dashboard butonu -->
         <v-spacer></v-spacer>
         <template v-if="isLoggedIn">
-          <v-btn :style="{ 'color': 'white', 'background-color': '#435334' }">{{ username }}</v-btn>
-          <v-btn @click="logout" :style="{ 'color': 'white', 'background-color': '#435334' }">Çıkış Yap</v-btn>
+
+          <v-btn :style="{ 'color': 'white', 'background-color': '#435334','margin-right': '8px' }">{{ username }}</v-btn>
+          <v-btn  v-if="isLoggedIn" @click="logoutUI" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">Çıkış Yap</v-btn>
         </template>
         <template v-else>
           <v-btn @click="goToLogin" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Login</v-btn>
@@ -34,8 +42,15 @@
 </template>
 
 <script>
+
+
+import useUserStore from '@/stores/userStore';
+
+
 export default {
-  data() {
+  setup() {
+    const userStore = useUserStore();
+    console.log(userStore.getUserName);
     return {
       isLoggedIn: false,
       username: "",
@@ -48,11 +63,12 @@ export default {
     goToRegister() {
       this.$router.push('/register');
     },
-    logout() {
-      // Çıkış işlemleri
-      this.isLoggedIn = false;
-      this.username = "";
-      // Çıkış işlemi sonrasında kullanıcıyı giriş sayfasına yönlendirin
+    logoutUI() {
+      // this.$store.dispatch('useUserStore/setUserData', null);
+      const userStore = useUserStore();
+      userStore.logout();
+      console.log("aaaaaa")
+      console.log(userStore.userName)
       this.$router.push('/login');
     },
 
