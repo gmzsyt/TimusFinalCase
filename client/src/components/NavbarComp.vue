@@ -35,7 +35,6 @@ import useUserStore from '@/stores/userStore';
 export default {
   setup() {
     const userStore = useUserStore();
-    console.log(userStore.isLoggedIn)
     return {
       username: userStore.getUserName,
       token: userStore.getRefreshToken,
@@ -53,8 +52,6 @@ export default {
     logoutUI() {
       const userStore = useUserStore();
       userStore.logout();
-      console.log("aaaaaa");
-      console.log(userStore.userName);
       this.$router.push('/login');
     },
     goToSettings() {

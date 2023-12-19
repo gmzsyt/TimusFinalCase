@@ -2,52 +2,46 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { usePageStore } from "./pageState";
 import useUserStore from "./userStore";
-
-const useFactoryStore = defineStore("factoryStore", {
+import useFactoryStore from "./factoryStore";
+const useDetailStore = defineStore("detailStore", {
   state: () => ({
-    factoryList: [],
-    detailId: null,
+    detailItems: null,
   }),
 
   getters: {
-    getFactoryList: (state) => state.factoryList,
-    getDetailFactoryID:(state)=>state.detailId
+    getFactoryDetailList: (state) => state.detailItems,
   },
 
   actions: {
-    async getAllFactoryList() {
+    async getAllFactoryDetail() {
       const pageStore = usePageStore();
       const userStore = useUserStore();
+      const factoryList = useFactoryStore();
+      const detailId = factoryList.getDetailFactoryID;
       const token = userStore.getToken;
-
 
       try {
         pageStore.setLoading(true);
 
         const response = await axios.get(
-          "http://localhost:3000/api/factoryList",
+          `http://localhost:3000/api/factoryDetail/${detailId}`,
           {
             headers: {
               authorization: `Bearer ${token} `,
             },
           }
         );
-        this.setFactoryList(response.data);
-        console.log(response.data);
+        this.setFactoryDetailList(response.data);
       } catch (error) {
         console.error("Giriş başarısız:", error.message);
       } finally {
         pageStore.setLoading(false);
       }
     },
-    setFactoryList(factoryList) {
-      this.factoryList = factoryList;
-    },
-    setDetailId(id) {
-      this.detailId = id;
-      console.log("Factory Detail id ",id);
+    setFactoryDetailList(detailList) {
+      this.detailItems = detailList;
     },
   },
 });
 
-export default useFactoryStore;
+export default useDetailStore;

@@ -5,7 +5,7 @@
 
     <v-container class="d-flex align-center justify-center" fluid>
       <v-btn @click="openAddColumnModal">Add Column</v-btn>
-     
+
       <v-table>
         <thead>
           <tr>
@@ -16,7 +16,7 @@
               membership date
             </th>
             <th class="text-left" style="background-color: #CEDEBD; color: white;">
-              membership expiration date 
+              membership expiration date
             </th>
             <th class="text-left" style="background-color: #CEDEBD; color: white;">
               number of employees
@@ -25,7 +25,8 @@
               free member
             </th>
             <!-- Add new column headers dynamically -->
-            <th v-for="(column, columnIndex) in newColumns" :key="columnIndex" class="text-left" style="background-color: #CEDEBD; color: white;">
+            <th v-for="(column, columnIndex) in newColumns" :key="columnIndex" class="text-left"
+              style="background-color: #CEDEBD; color: white;">
               {{ column.name }}
             </th>
           </tr>
@@ -42,7 +43,7 @@
               {{ factory[column.name] }}
             </td>
             <td>
-              <v-btn @click="goToDetail(index)">View Details</v-btn>
+              <v-btn @click="goToDetail(index, factory.id)">View Details</v-btn>
             </td>
             <!-- Add the "Edit" button here -->
             <td>
@@ -54,8 +55,9 @@
     </v-container>
 
     <!-- Add the FactoryListEditModal component -->
-    <factory-list-edit-modal :factory="selectedFactory" ref="editModal" @save-changes="saveChanges"></factory-list-edit-modal>
-    
+    <factory-list-edit-modal :factory="selectedFactory" ref="editModal"
+      @save-changes="saveChanges"></factory-list-edit-modal>
+
     <!-- Add the FactoryListAddColumnModal component -->
     <factory-list-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-list-add-column-modal>
     <factory-list-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-list-add-column-modal>
@@ -78,21 +80,23 @@ export default {
   },
   data() {
     return {
-      factoryList : [],
       selectedFactory: null,
     };
   },
 
   setup() {
     const factoryStore = useFactoryStore();
-     factoryStore.getAllFactoryList();
-     const factoryList = factoryStore.getFactoryList;
+    factoryStore.getAllFactoryList();
+    const factoryList = factoryStore.getFactoryList;
+    console.log(factoryList)
     return {
       factoryList,
     };
   },
   methods: {
-    goToDetail(index) {
+    goToDetail(index, id) {
+      const factoryStore = useFactoryStore();
+      factoryStore.setDetailId(id);
       this.$router.push('/detail');
     },
     editRow(index) {
@@ -105,7 +109,7 @@ export default {
         this.$set(this.factoryList, index, { ...updatedFactory });
       }
     },
-  
+
     addColumn(newColumn) {
       this.newColumns.push(newColumn);
       this.factoryList.forEach(factory => {
