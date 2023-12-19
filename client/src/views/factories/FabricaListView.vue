@@ -110,6 +110,7 @@ export default {
   });
 },
     openAddColumnModal() {
+      
       this.$refs.addColumnModal.dialog = true;
     },
   },
