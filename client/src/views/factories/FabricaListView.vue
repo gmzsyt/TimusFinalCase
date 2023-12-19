@@ -78,13 +78,18 @@ export default {
   },
   data() {
     return {
-      factoryList:factoryStore.getFactoryList
+      factoryList : [],
+      selectedFactory: null,
     };
   },
+
   setup() {
     const factoryStore = useFactoryStore();
-    factoryStore.getAllFactoryList();
-    console.log("inn")
+     factoryStore.getAllFactoryList();
+     const factoryList = factoryStore.getFactoryList;
+    return {
+      factoryList,
+    };
   },
   methods: {
     goToDetail(index) {
@@ -100,13 +105,9 @@ export default {
         this.$set(this.factoryList, index, { ...updatedFactory });
       }
     },
-    openAddColumnModal() {
-      this.$refs.addColumnModal.dialog = true;
-    },
+  
     addColumn(newColumn) {
-      // Add new column dynamically
       this.newColumns.push(newColumn);
-      // Update existing factories with the default value for the new column
       this.factoryList.forEach(factory => {
         this.$set(factory, newColumn.name, null);
       });

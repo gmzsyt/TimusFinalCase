@@ -9,6 +9,7 @@ const useUserStore = defineStore('userStore', {
     refreshToken: null,
     isLogin: false,
     token : null,
+
   }),
 
   getters: {
@@ -22,7 +23,7 @@ const useUserStore = defineStore('userStore', {
   actions: {  
     async login(email, password) {
       const pageStore = usePageStore();
-      
+
 
       try {
         pageStore.setLoading(true);
@@ -39,11 +40,11 @@ const useUserStore = defineStore('userStore', {
     },
     setUserData(userData) {
       this.userId = userData.userId;
-
       this.userName = userData.username;
       this.refreshToken = userData.refreshToken;
       this.isLogin = true;
       this.token = userData.accessToken;
+
     },
     logout() {
       console.log("asssssssssss")

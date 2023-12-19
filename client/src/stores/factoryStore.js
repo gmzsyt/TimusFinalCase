@@ -28,6 +28,7 @@ const useFactoryStore = defineStore('factoryStore', {
               },});
             console.log(response.data); 
                 this.setFactoryList(response.data);
+                console.log(response)
 
         } catch (error) {
             console.error('Giriş başarısız:', error.message);
