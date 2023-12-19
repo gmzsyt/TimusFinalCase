@@ -15,6 +15,7 @@
 
           <v-btn :style="{ 'color': 'white', 'background-color': '#435334','margin-right': '8px' }">{{ username }}</v-btn>
           <v-btn  v-if="isLoggedIn" @click="logoutUI" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">Çıkış Yap</v-btn>
+
         </template>
 
         <template v-else>
@@ -41,8 +42,9 @@ import useUserStore from '@/stores/userStore';
 export default {
 
   setup() {
-    const userStore = useUserStore();
+    const userStore = useUserStore();},
 
+  data() {
     return {
       username: userStore.getUserName,
       token: userStore.getRefreshToken,
@@ -63,6 +65,7 @@ export default {
       userStore.logout();
       console.log("aaaaaa")
       console.log(userStore.userName)
+
       this.$router.push('/login');
     },
     goToSettings() {

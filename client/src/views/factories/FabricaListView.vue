@@ -77,8 +77,6 @@ export default {
     FactoryListAddColumnModal,
   },
   data() {
-    
-    const factoryStore = useFactoryStore();
     return {
       factoryList:factoryStore.getFactoryList
     };
