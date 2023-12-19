@@ -9,43 +9,21 @@
       <v-table>
         <thead>
           <tr>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">
-              company name
+            <th v-for="(column, columnIndex) in columnsList" :key="columnIndex" class="text-left"
+                style="background-color: #CEDEBD; color: white;">
+              {{ column }}
             </th>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">
-              membership date
-            </th>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">
-              membership expiration date
-            </th>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">
-              number of employees
-            </th>
-            <th class="text-left" style="background-color: #CEDEBD; color: white;">
-              free member
-            </th>
-            <!-- Add new column headers dynamically -->
-            <th v-for="(column, columnIndex) in newColumns" :key="columnIndex" class="text-left"
-              style="background-color: #CEDEBD; color: white;">
-              {{ column.name }}
-            </th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(factory, index) in factoryList" :key="index" style="background-color: #9EB384;">
-            <td>{{ factory.company_name }}</td>
-            <td>{{ factory.membership_start_date }}</td>
-            <td>{{ factory.membership_end_date }}</td>
-            <td>{{ factory.employee_count }}</td>
-            <td>{{ factory.free_member }}</td>
-            <!-- Display new columns dynamically -->
-            <td v-for="(column, columnIndex) in newColumns" :key="columnIndex">
-              {{ factory[column.name] }}
+            <td v-for="(column, columnIndex) in columnsList" :key="columnIndex">
+              {{ factory[column] }}
             </td>
             <td>
               <v-btn @click="goToDetail(index, factory.id)">View Details</v-btn>
             </td>
-            <!-- Add the "Edit" button here -->
             <td>
               <v-btn @click="editRow(index)">Edit</v-btn>
             </td>
@@ -60,8 +38,6 @@
 
     <!-- Add the FactoryListAddColumnModal component -->
     <factory-list-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-list-add-column-modal>
-    <factory-list-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-list-add-column-modal>
-
   </div>
 </template>
 
@@ -71,6 +47,7 @@ import FactoryListEditModal from '@/modals/FactoryListEditModal.vue';
 import FactoryListAddColumnModal from '@/modals/FactoryListAddColumnModal.vue';
 import useFactoryStore from '@/stores/factoryStore';
 import { ref, onMounted, watchEffect } from 'vue';
+import useColumns from '@/stores/columnsStore';
 
 
 
@@ -88,18 +65,23 @@ export default {
 
   setup() {
   const factoryStore = useFactoryStore();
+  const columnStore = useColumns();
   const factoryList = ref(factoryStore.getFactoryList);
+  const columnsList = ref(factoryStore.getColumns);
 
   onMounted(() => {
     factoryStore.getAllFactoryList();
+    columnStore.getAllColumns();
   });
-  
+
   watchEffect(() => {
     factoryList.value = factoryStore.getFactoryList;
+    columnsList.value = columnStore.getColumns;
   });
 
   return {
     factoryList,
+    columnsList,
   };
 },
   methods: {

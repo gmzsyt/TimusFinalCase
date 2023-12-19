@@ -8,7 +8,7 @@ import FactoryDetail from '@/views/factories/FactoryDetailView.vue';
 import useUserStore from '@/stores/userStore'; 
 
 const routes = [
-  { path: '/', component: Home, meta: { requiresAuth: true } },
+  { path: '/', component: Home},
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/settings', component: Settings, meta: { requiresAuth: true } },

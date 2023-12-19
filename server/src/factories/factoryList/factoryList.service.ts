@@ -27,25 +27,35 @@ export class FactoryListService {
     return existingRecord.rows[0];
 }
 
-  async create(factoryListCreateDTO: FactoryListCreateDTO): Promise<any> {
-    try {
-      const result = await this.pool.query(
-        'INSERT INTO factory_list (company_name, membership_start_date, membership_end_date, employee_count, free_member) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-        [
-          factoryListCreateDTO.company_name,
-          factoryListCreateDTO.membership_start_date,
-          factoryListCreateDTO.membership_end_date,
-          factoryListCreateDTO.employee_count,
-          factoryListCreateDTO.free_member,
-        ],
-      );
-      return result.rows[0];
-    } 
-    catch (error) {
-      console.error('An error occurred while creating the factory:', error);
-        throw new Error('An error occurred while creating the factory.');
+async create(factoryListCreateDTO: FactoryListCreateDTO): Promise<any> {
+  try {
+    // Yeni sütunları kontrol et
+    if (factoryListCreateDTO.dynamicFields && factoryListCreateDTO.dynamicFields.length > 0) {
+      for (const dynamicField of factoryListCreateDTO.dynamicFields) {
+        // Eğer doldurulması zorunlu bir sütun boşsa, hata fırlat
+        if (dynamicField.isRequired && !dynamicField.value) {
+          throw new Error(`Column '${dynamicField.key}' is required and must be filled.`);
+        }
+      }
     }
+
+    // Diğer create işlemlerini gerçekleştir
+    const result = await this.pool.query(
+      'INSERT INTO factory_list (company_name, membership_start_date, membership_end_date, employee_count, free_member) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [
+        factoryListCreateDTO.company_name,
+        factoryListCreateDTO.membership_start_date,
+        factoryListCreateDTO.membership_end_date,
+        factoryListCreateDTO.employee_count,
+        factoryListCreateDTO.free_member,
+      ],
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error('An error occurred while creating the factory:', error);
+    throw new Error('An error occurred while creating the factory.');
   }
+}
 
   async update(id: number, factoryListUpdateDTO: FactoryListUpdateDTO): Promise<any> {
     const existingRecord = await this.findById(id);
@@ -141,6 +151,15 @@ export class FactoryListService {
     }
   }
 
+  async getColumnNames(): Promise<string[]> {
+    const queryResult = await this.pool.query('SELECT column_name FROM information_schema.columns WHERE table_name = $1', ['factory_list']);
+    const columnNames = queryResult.rows.map((row: any) => row.column_name);
+    console.log('Query Result:', queryResult);
 
+    return columnNames;
+  }
 }
+
+
+
   

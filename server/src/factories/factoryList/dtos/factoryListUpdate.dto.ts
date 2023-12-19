@@ -1,5 +1,6 @@
-import { Transform, Type } from 'class-transformer';
-import { IsString, IsDate, IsNumber, IsBoolean, IsOptional } from 'class-validator';
+import { Transform, Type } from "class-transformer";
+import { IsBoolean, IsDate, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
+import { DynamicField } from "./dynamicField.dto";
 
 export class FactoryListUpdateDTO {
   @IsOptional()
@@ -9,6 +10,7 @@ export class FactoryListUpdateDTO {
   @IsOptional()
   @IsDate()
   @Transform(({ value }) => value ? new Date(value) : undefined)
+
   @Type(() => Date)
   membership_start_date?: Date;
 
@@ -25,4 +27,8 @@ export class FactoryListUpdateDTO {
   @IsOptional()
   @IsBoolean()
   free_member?: boolean;
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  dynamicFields?: DynamicField[];
 }

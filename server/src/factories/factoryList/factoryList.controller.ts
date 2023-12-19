@@ -15,7 +15,7 @@ export class FactoryListController {
     return this.factoryListService.findAll();
   }
 
-  @Get(':id')
+  @Get('findById/:id')
   async findById(@Param('id') id: string): Promise<any> {
     return this.factoryListService.findById(+id);
   }
@@ -46,7 +46,7 @@ export class FactoryListController {
       throw new Error('An error occurred while removing the column.');
     }
   }
-
+  
   @Post('addColumnFactoryListTable')
   async addColumn(
     @Body() columnInfo: { columnName: string, columnType: string },
@@ -60,4 +60,15 @@ export class FactoryListController {
       throw new Error('An error occurred while adding the column.');
     }
   }
+  
+  @Get('getColumnNames') 
+async getColumnNames(): Promise<string[]> {
+  try {
+    const columnNames = await this.factoryListService.getColumnNames();
+    return columnNames;
+  } catch (error) {
+    console.error('An error occurred while fetching column names:', error);
+    throw new Error('An error occurred while fetching column names.');
+  }
+}
 }

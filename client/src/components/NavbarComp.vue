@@ -7,7 +7,7 @@
 
         <v-spacer></v-spacer>
 
-        <template v-if="isLoggedIn">
+        <template v-if="localToken">
           <v-btn :style="{ 'color': 'white', 'background-color': '#435334','margin-right': '8px' }">{{ username }}</v-btn>
           <v-btn @click="logoutUI" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">Çıkış Yap</v-btn>
           <v-btn @click="goToDashboard" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">Dashboard</v-btn>
@@ -15,9 +15,9 @@
 
         </template>
 
-        <template v-if="!isLoggedIn">
-          <v-btn @click="goToLogin" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Giriş Yap</v-btn>
-          <v-btn @click="goToRegister" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Kayıt Ol</v-btn>
+        <template v-if="!localToken">
+          <v-btn @click="goToLogin" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Login</v-btn>
+          <v-btn @click="goToRegister" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Register</v-btn>
         </template>
 
       </v-app-bar>
@@ -36,10 +36,10 @@ export default {
   setup() {
     const userStore = useUserStore();
     return {
-      username: userStore.getUserName,
-      token: userStore.getRefreshToken,
+      username: localStorage.getItem('username'),
+      token: userStore.token,
       isLoggedIn: userStore.isLoggedIn,
-    
+      localToken: localStorage.getItem('token')
     };
   },
   methods: {
@@ -52,6 +52,7 @@ export default {
     logoutUI() {
       const userStore = useUserStore();
       userStore.logout();
+      localStorage.removeItem('token');
       this.$router.push('/login');
     },
     goToSettings() {
