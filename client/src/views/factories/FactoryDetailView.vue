@@ -34,6 +34,8 @@
   <script>
   import Navbar from '@/components/NavbarComp.vue';
   import useDetailStore from '@/stores/factoryDetailStore';
+  import { ref, onMounted, watchEffect } from 'vue';
+
   
   export default {
     components: {
@@ -45,13 +47,22 @@
     },
     setup() {
     const detailStore = useDetailStore();
+    const factoryDetailList = ref(detailStore.getFactoryDetailList)
+
+    onMounted(() => {
     detailStore.getAllFactoryDetail();
-    const factoryDetailList = detailStore.getFactoryDetailList;
-    console.log("Detail List,",factoryDetailList)
+  });
+  
+  watchEffect(() => {
+    factoryDetailList.value = detailStore.getFactoryDetailList;
+  });
+
     return {
       factoryDetailList,
     };
   },
+
+  
     methods: {
     },
   };

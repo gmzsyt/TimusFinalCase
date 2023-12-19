@@ -70,6 +70,8 @@ import Navbar from '@/components/NavbarComp.vue';
 import FactoryListEditModal from '@/modals/FactoryListEditModal.vue';
 import FactoryListAddColumnModal from '@/modals/FactoryListAddColumnModal.vue';
 import useFactoryStore from '@/stores/factoryStore';
+import { ref, onMounted, watchEffect } from 'vue';
+
 
 
 export default {
@@ -85,14 +87,21 @@ export default {
   },
 
   setup() {
-    const factoryStore = useFactoryStore();
+  const factoryStore = useFactoryStore();
+  const factoryList = ref(factoryStore.getFactoryList);
+
+  onMounted(() => {
     factoryStore.getAllFactoryList();
-    const factoryList = factoryStore.getFactoryList;
-    console.log(factoryList)
-    return {
-      factoryList,
-    };
-  },
+  });
+  
+  watchEffect(() => {
+    factoryList.value = factoryStore.getFactoryList;
+  });
+
+  return {
+    factoryList,
+  };
+},
   methods: {
     goToDetail(index, id) {
       const factoryStore = useFactoryStore();
