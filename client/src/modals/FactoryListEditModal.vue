@@ -1,14 +1,12 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <v-card>
-      <v-card-title>Fabrikayı Düzenle</v-card-title>
+      <v-card-title>Edit Factory</v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid">
           <v-container>
-            <!-- Fabrika özellikleri için döngü -->
             <v-row v-for="(column, index) in columns" :key="index">
               <v-col>
-                <!-- Kullanıcıdan gelen verileri bağla -->
                 <v-text-field
                   :label="`${column} değerini girin`"
                   v-model="columnValues[column]"
@@ -21,10 +19,8 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <!-- İptal butonu -->
-        <v-btn @click="closeModal">İptal</v-btn>
-        <!-- Değişiklikleri kaydet butonu -->
-        <v-btn @click="saveChanges" color="primary" :disabled="!valid">Değişiklikleri Kaydet</v-btn>
+        <v-btn @click="closeModal">Cancel</v-btn>
+        <v-btn @click="saveChanges" color="primary" :disabled="!valid">Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -43,7 +39,7 @@ export default {
       dialog: false,
       columns: [],
       columnValues: {},
-      valid: false, // Form validation state
+      valid: false, 
     };
   },
   watch: {
@@ -61,14 +57,10 @@ export default {
     },
 
     validateFieldType(value, column) {
-      // Add custom validation logic for each field type
       if (column === 'age') {
-        // Example: Check if the age is a number
         return /^[0-9]+$/.test(value) || 'Lütfen geçerli bir yaş girin.';
       }
-      // Add more custom validation logic for other fields if needed
-
-      // Default to true if no specific validation is defined
+   
       return true;
     },
 
