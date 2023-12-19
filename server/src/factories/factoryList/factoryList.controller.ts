@@ -56,7 +56,10 @@ export class FactoryListController {
       await this.factoryListService.addColumn(columnName, columnType);
       return { message: `Column '${columnName}' added successfully.` };
     } catch (error) {
-      console.error('An error occurred while adding the column:', error);
+      console.error('An error occurred while adding the column:', error.message);
+      if (error.detail) {
+        console.error('PostgreSQL Error Detail:', error.detail);
+      }
       throw new Error('An error occurred while adding the column.');
     }
   }

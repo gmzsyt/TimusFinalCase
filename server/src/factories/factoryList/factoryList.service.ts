@@ -29,17 +29,14 @@ export class FactoryListService {
 
 async create(factoryListCreateDTO: FactoryListCreateDTO): Promise<any> {
   try {
-    // Yeni sütunları kontrol et
     if (factoryListCreateDTO.dynamicFields && factoryListCreateDTO.dynamicFields.length > 0) {
       for (const dynamicField of factoryListCreateDTO.dynamicFields) {
-        // Eğer doldurulması zorunlu bir sütun boşsa, hata fırlat
         if (dynamicField.isRequired && !dynamicField.value) {
           throw new Error(`Column '${dynamicField.key}' is required and must be filled.`);
         }
       }
     }
 
-    // Diğer create işlemlerini gerçekleştir
     const result = await this.pool.query(
       'INSERT INTO factory_list (company_name, membership_start_date, membership_end_date, employee_count, free_member) VALUES ($1, $2, $3, $4, $5) RETURNING *',
       [
@@ -79,6 +76,7 @@ async create(factoryListCreateDTO: FactoryListCreateDTO): Promise<any> {
   
       return result.rows[0];
     } catch (error) {
+      console.error('Fabrika güncellenirken bir hata oluştu:', error);
       throw new Error('An error occurred while updating the factory.');
     }
   }
