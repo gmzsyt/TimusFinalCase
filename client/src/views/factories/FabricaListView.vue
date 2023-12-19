@@ -32,11 +32,11 @@
         </thead>
         <tbody>
           <tr v-for="(factory, index) in factoryList" :key="index" style="background-color: #9EB384;">
-            <td>{{ factory.companyName }}</td>
-            <td>{{ factory.membershipStartDate }}</td>
-            <td>{{ factory.membershipEndDate }}</td>
-            <td>{{ factory.employeeCount }}</td>
-            <td>{{ factory.freeMember }}</td>
+            <td>{{ factory.company_name }}</td>
+            <td>{{ factory.membership_start_date }}</td>
+            <td>{{ factory.membership_end_date }}</td>
+            <td>{{ factory.employee_count }}</td>
+            <td>{{ factory.free_member }}</td>
             <!-- Display new columns dynamically -->
             <td v-for="(column, columnIndex) in newColumns" :key="columnIndex">
               {{ factory[column.name] }}
@@ -77,67 +77,10 @@ export default {
     FactoryListAddColumnModal,
   },
   data() {
+    
+    const factoryStore = useFactoryStore();
     return {
-      factoryList: [
-        {
-          companyName: 'Firma 1',
-          membershipStartDate: '2023-01-01',
-          membershipEndDate: '2024-01-01',
-          employeeCount: 100,
-          freeMember: false,
-        },
-        {
-          companyName: 'Firma 2',
-          membershipStartDate: '2023-02-01',
-          membershipEndDate: '2024-02-01',
-          employeeCount: 50,
-          freeMember: true,
-        },
-        // ... Diğer fabrikalar
-      ],
-      desserts: [
-        {
-          name: 'Frozen Yogurt',
-          calories: 159,
-        },
-        {
-          name: 'Ice cream sandwich',
-          calories: 237,
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-        },
-      ],
-      newColumns: [], 
+      factoryList:factoryStore.getFactoryList
     };
   },
   setup() {

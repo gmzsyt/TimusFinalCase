@@ -33,7 +33,10 @@ const useFactoryStore = defineStore('factoryStore', {
             pageStore.setLoading(false);
           }
     },
+
+    setFactoryList(factoryList) {
+      this.factoryList = factoryList;
+    },
   },
 });
-
 export default useFactoryStore;
