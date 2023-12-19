@@ -67,7 +67,7 @@ export default {
   const factoryStore = useFactoryStore();
   const columnStore = useColumns();
   const factoryList = ref(factoryStore.getFactoryList);
-  const columnsList = ref(factoryStore.getColumns);
+  const columnsList = ref(columnStore.getColumns);
 
   onMounted(() => {
     factoryStore.getAllFactoryList();
@@ -77,6 +77,7 @@ export default {
   watchEffect(() => {
     factoryList.value = factoryStore.getFactoryList;
     columnsList.value = columnStore.getColumns;
+    console.log('columnsList changed. Re-rendering...');
   });
 
   return {
@@ -102,11 +103,12 @@ export default {
     },
 
     addColumn(newColumn) {
-      this.newColumns.push(newColumn);
-      this.factoryList.forEach(factory => {
-        this.$set(factory, newColumn.name, null);
-      });
-    },
+  this.$set(this.columnsList, this.columnsList.length, newColumn);
+
+  this.factoryList.forEach(factory => {
+    this.$set(factory, newColumn.name, null);
+  });
+},
     openAddColumnModal() {
       this.$refs.addColumnModal.dialog = true;
     },
