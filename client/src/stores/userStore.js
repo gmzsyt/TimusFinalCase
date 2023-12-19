@@ -8,7 +8,7 @@ const useUserStore = defineStore('userStore', {
     userName: null,
     refreshToken: null,
     isLogin: false,
-    token : null,
+    token :localStorage.getItem('token') || null,
 
   }),
 
@@ -32,6 +32,7 @@ const useUserStore = defineStore('userStore', {
           password: password,
         });
         this.setUserData(response.data);
+        localStorage.setItem('token', response.data.accessToken);
       } catch (error) {
         console.error('Giriş başarısız:', error.message);
       } finally {
@@ -51,8 +52,9 @@ const useUserStore = defineStore('userStore', {
       this.userId = null;
       this.userName = null;
       this.refreshToken = null;
-      this.isLogin=false;
-      this.accessToken= null;
+      this.isLogin = false;
+      this.token = null;
+      localStorage.removeItem('token');
     },
   },
 });
