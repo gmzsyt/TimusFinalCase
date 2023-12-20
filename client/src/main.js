@@ -27,7 +27,8 @@ const i18n = createI18n({
       edit: "Edit",
       FactoryListPage: "Factory List Table",
       FactoryDetailPage:"Factory Detail Table",
-      appname: "Factory Labels"
+      appname: "Factory Labels",
+      welcome: "Welcome to the Factory Labels!"
     },
     tr: {
       settings: "Ayarlar",
@@ -45,7 +46,9 @@ const i18n = createI18n({
       edit: "Düzenle",
       FactoryListPage: "Fabrika Listesi Tablosu",
       FactoryDetailPage:"Fabrika Detay Tablosu ",
-      appname: "Fabrika Etiketleri"
+      appname: "Fabrika Etiketleri",
+      welcome: "Factory Etiketlerine Hoş Geldin!"
+
       
 
 
