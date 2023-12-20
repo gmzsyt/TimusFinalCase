@@ -6,17 +6,20 @@
         <v-text-field v-model="user.password" label="Password" outlined type="password"></v-text-field>
 
         <v-checkbox v-model="rememberMe" label="Remember Me"></v-checkbox>
+        <v-btn icon @click="toggleLanguage" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">
+          <v-icon>mdi-translate</v-icon>
+        </v-btn>
 
         <v-btn type="submit" color="primary" block class="mt-4 p">Login</v-btn>
       </v-form>
+      
 
       <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="snackbarTimeout">
         {{ snackbarMessage }}
       </v-snackbar>
 
       <div class="mt-4">
-        <p class="text-body-2">Don't have an account? <router-link to="/register">Register</router-link></p>
-      </div>
+        <p class="text-body-2">{{$t('donthave')}} <router-link to="/register">{{$t('register')}}</router-link></p>      </div>
     </v-sheet>
   </div>
 </template>
@@ -47,6 +50,9 @@ export default {
     }
   },
   methods: {
+    toggleLanguage() {
+      this.$i18n.locale = this.$i18n.locale === 'en' ? 'tr' : 'en';
+    },
     async login() {
       try {
         const authStore = useUserStore();

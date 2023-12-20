@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div >
     <Navbar />
-    <h1 class="text-center mt-5">Factory Detail Page</h1>
+    <div class="harrypotter">
+    <h1 class="text-center mt-5">{{$t('FactoryDetailPage')}}</h1>
 
     <v-alert v-if="addColumnSuccess" type="success" title="Column Added"
       text="The column has been added successfully."></v-alert>
@@ -22,7 +23,7 @@
               </v-btn>
             </th>
             <th>
-          <v-btn @click="openAddColumnModal">Add Column</v-btn> 
+          <v-btn @click="openAddColumnModal">{{$t('addcolumn')}}</v-btn> 
             </th> 
             
           </tr>
@@ -33,7 +34,7 @@
               {{ value }}
             </td>
             <td>
-              <v-btn @click="openEditModal(factoryDetail)">Edit</v-btn>
+              <v-btn @click="openEditModal(factoryDetail)">{{$t('edit')}}</v-btn>
             </td>
           </tr>
         </tbody>
@@ -43,6 +44,7 @@
     <factory-detail-edit-modal :factoryDetail="selectedFactory" ref="editModal" @factoryDetail-updated="factoryDetailUpdated"></factory-detail-edit-modal>
 
     <factory-detail-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-detail-add-column-modal>
+  </div>
   </div>
 </template>
 
@@ -141,3 +143,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.harrypotter{
+  position: relative;
+  top: -280px;
+}
+
+</style>

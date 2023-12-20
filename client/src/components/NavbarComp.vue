@@ -9,17 +9,21 @@
 
         <template v-if="localToken">
           <v-btn :style="{ 'color': 'white', 'background-color': '#435334','margin-right': '8px' }">{{ username }}</v-btn>
-          <v-btn @click="logoutUI" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">Çıkış Yap</v-btn>
-          <v-btn @click="goToDashboard" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">Dashboard</v-btn>
-          <v-btn @click="goToSettings" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">Settings</v-btn>
+          <v-btn @click="logoutUI" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">{{$t('logout')}}</v-btn>
+          <v-btn @click="goToDashboard" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">{{$t('dashboard')}}</v-btn>
+          <v-btn @click="goToSettings" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">{{$t('settings')}}</v-btn>
 
         </template>
 
         <template v-if="!localToken">
-          <v-btn @click="goToLogin" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Login</v-btn>
-          <v-btn @click="goToRegister" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">Register</v-btn>
+          <v-btn @click="goToLogin" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">{{$t('sign in')}}</v-btn>
+          <v-btn @click="goToRegister" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">{{$t('settings')}}</v-btn>
         </template>
 
+        <!-- Dil seçeneği için icon -->
+        <v-btn icon @click="toggleLanguage" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">
+          <v-icon>mdi-translate</v-icon>
+        </v-btn>
       </v-app-bar>
 
       <v-row justify="center">
@@ -28,6 +32,7 @@
     </v-app>
   </v-container>
 </template>
+
 
 <script>
 import useUserStore from '@/stores/userStore';
@@ -43,6 +48,9 @@ export default {
     };
   },
   methods: {
+    toggleLanguage() {
+      this.$i18n.locale = this.$i18n.locale === 'en' ? 'tr' : 'en';
+    },
     goToLogin() {
       this.$router.push('/login');
     },

@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="heightControl" >
     <Navbar />
-    <h1 class="text-center mt-5">Factory List Page</h1>
+    <div class="harry">
+    <h1 class="text-center mt-5">{{$t('FactoryListPage')}}</h1>
 
     <v-alert v-if="addColumnSuccess" type="success" title="Column Added"
       text="The column has been added successfully."></v-alert>
@@ -11,7 +12,7 @@
 
     <v-container class="d-flex align-center justify-center" fluid>
 
-      <v-table>
+      <v-table  >
         <thead>
           <tr>
             <th v-for="(column, columnIndex) in columnsList" :key="columnIndex" class="text-left"
@@ -22,7 +23,7 @@
               </v-btn>
             </th>
             <th>
-              <v-btn @click="openAddColumnModal">Add Column</v-btn>
+              <v-btn @click="openAddColumnModal">{{$t('addcolumn')}}</v-btn>
             </th>
           </tr>
         </thead>
@@ -32,10 +33,10 @@
               {{ factory[column] }}
             </td>
             <td>
-              <v-btn @click="goToDetail(index, factory.id)">View Details</v-btn>
+              <v-btn @click="goToDetail(index, factory.id)">{{$t('viewDetail')}}</v-btn>
             </td>
             <td>
-              <v-btn @click="editRow(index)">Edit</v-btn>
+              <v-btn @click="editRow(index)">{{$t('edit')}}</v-btn>
             </td>
           </tr>
         </tbody>
@@ -47,6 +48,7 @@
 
     <factory-list-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-list-add-column-modal>
   </div>
+</div>
 </template>
 
 <script>
@@ -148,3 +150,16 @@ export default {
   },
 };
 </script>
+<style scoped>
+.heightControl{
+  height: 100vh;
+  overflow:hidden;
+}
+.harry{
+  position: relative;
+  top: -600px;
+
+}
+
+</style>
+
