@@ -9,7 +9,8 @@ export const dbProvider = {
       host: process.env.PG_HOST,
       database: process.env.PG_DATABASE,
       password: process.env.PG_PASSWORD,
-      port: parseInt(process.env.PG_PORT, 10)
+      port: parseInt(process.env.PG_PORT, 10),
+      ssl:true,
     });
 
     const client = await pool.connect();
@@ -35,7 +36,7 @@ export const dbProvider = {
         date_range DATERANGE,
         usage_kw INTEGER,
         usage_fee INTEGER,
-        discounted_price BOOLEANY
+        discounted_price BOOLEAN
       );
       `);
       console.log("tablo oluşturuldu 2")
