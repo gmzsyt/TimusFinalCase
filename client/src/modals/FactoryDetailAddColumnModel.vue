@@ -65,7 +65,7 @@
           const token = userStore.getToken;
   
           await this.$axios.post(
-            `http://localhost:3000/api/factoryList/addColumnFactoryDetailTable`,
+            `http://localhost:3000/api/factoryDetail/addColumnFactoryDetailTable`,
             {
               columnName: this.columnInfo.columnName,
               columnType: this.columnInfo.columnType,
