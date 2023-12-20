@@ -52,35 +52,37 @@ async create(factoryId: number, factoryDetailCreateDTO: FactoryDetailCreateDTO):
 }
 
 async update(id: number, factoryDetailUpdateDTO: FactoryDetailUpdateDTO): Promise<any> {
-  const existingRecord = await this.findById(id);
 
+  const columns = await this.getColumnNames();
+  const columnsWithoutId = columns.filter(column => column !== 'id');
+  const updateSet = columnsWithoutId.map((column, index) => `${column} = $${index + 1}`).join(', ');
+  const updateValues = columnsWithoutId.map(column => factoryDetailUpdateDTO[column]);
+  console.log(updateSet);
+  console.log(updateValues);
+  
+  const existingRecord = await this.findById(id);
+  
   if (!existingRecord) {
     throw new NotFoundException(`Factory with ID ${id} not found`);
   }
-
+  
   try {
     const startDate = new Date(factoryDetailUpdateDTO.start_date).toISOString();
     const endDate = new Date(factoryDetailUpdateDTO.end_date).toISOString();
-
-    const result = await this.pool.query(
-      'UPDATE factory_detail SET using_unit = $1, date_range = daterange($2, $3), usage_kw = $4, usage_fee = $5, discounted_price = $6 WHERE id = $7 RETURNING *',
-      [
-        factoryDetailUpdateDTO.using_unit,
-        startDate,
-        endDate,
-        factoryDetailUpdateDTO.usage_kw,
-        factoryDetailUpdateDTO.usage_fee,
-        factoryDetailUpdateDTO.discounted_price,
-        id,
-      ],
-    );
-    
-
+  
+    const updateStatement = `UPDATE factory_detail SET ${updateSet} WHERE id = $${columnsWithoutId.length + 1} RETURNING *`;
+  
+    const queryValues = [...updateValues, id];
+  
+    // Execute the dynamic query
+    const result = await this.pool.query(updateStatement, queryValues);
+  
     return result.rows[0];
-  }  catch (error) {
+  } catch (error) {
     console.error('An error occurred while updating the factory:', error);
     throw new Error(`An error occurred while updating the factory. Details: ${error.message}`);
   }
+  
 }
 
   async delete(id: number): Promise<void> {

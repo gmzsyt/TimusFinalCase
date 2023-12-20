@@ -9,8 +9,7 @@
     <v-alert v-if="deleteColumnSuccess" type="success" title="Column Deleted"
       text="The column has been deleted successfully."></v-alert>
 
-    <v-container class="d-flex align-center justify-center" fluid>
-      <v-btn @click="openAddColumnModal">Add Column</v-btn>
+     <v-container class="d-flex align-center justify-center" fluid>
 
       <v-table>
         <thead>
@@ -18,10 +17,10 @@
             <th v-for="(column, columnIndex) in columnsList" :key="columnIndex" class="text-left"
               style="background-color: #CEDEBD; color: white;">
               {{ column }}
-              <!-- <v-btn @click="deleteColumn(column)">
-                <v-icon color="red">mdi-delete</v-icon>
-              </v-btn> -->
             </th>
+            <th>
+          <v-btn @click="openAddColumnModal">Add Column</v-btn> 
+            </th> 
           </tr>
         </thead>
         <tbody>
@@ -29,31 +28,36 @@
             <td v-for="(value, key) in factoryDetail" :key="key">
               {{ value }}
             </td>
+            <td>
+              <v-btn @click="openEditModal(factoryDetail)">Edit</v-btn>
+            </td>
           </tr>
         </tbody>
       </v-table>
     </v-container>
 
-    <!-- <factory-list-edit-modal :factory="selectedFactory" ref="editModal" @save-changes="saveChanges"></factory-list-edit-modal> -->
+    <factory-detail-edit-modal :factoryDetail="selectedFactory" ref="editModal" @factoryDetail-updated="factoryDetailUpdated"></factory-detail-edit-modal>
 
     <factory-detail-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-detail-add-column-modal>
   </div>
 </template>
 
+
 <script>
 import Navbar from '@/components/NavbarComp.vue';
-// import FactoryListEditModal from '@/modals/FactoryListEditModal.vue';
+import FactoryDetailEditModal from '@/modals/FactoryDetailEditModal.vue';
 import FactoryDetailAddColumnModal from '@/modals/FactoryDetailAddColumnModel.vue';
 import useDetailStore from '@/stores/factoryDetailStore';
-import useColumns from '@/stores/columnsStore';
+import useColumns from '@/stores/columnsDetailStore';
 import { ref, onMounted, watchEffect } from 'vue';
 import useUserStore from '@/stores/userStore';
 import axios from 'axios';
 
+
 export default {
   components: {
     Navbar,
-    // FactoryListEditModal,
+    FactoryDetailEditModal,
     FactoryDetailAddColumnModal
   },
   data() {
@@ -68,15 +72,15 @@ export default {
     const columnStore = useColumns();
     const factoryDetailList = ref(factoryDetailStore.getFactoryDetailList);
     const columnsList = ref(columnStore.getColumns);
-
     onMounted(() => {
+
       factoryDetailStore.getAllFactoryDetail();
-      columnStore.getAllColumns();
+      columnStore.getAllColumnsDetail();
     });
 
     watchEffect(() => {
       factoryDetailList.value = factoryDetailStore.getFactoryDetailList;
-      columnsList.value = columnStore.getColumns;
+      columnsList.value = columnStore.getColumnsDetail;
     });
     return {
       factoryDetailList,
@@ -84,6 +88,10 @@ export default {
     };
   },
   methods: {
+    openEditModal(factoryDetail) {
+      this.selectedFactory = factoryDetail;
+      this.$refs.editModal.dialog = true;
+    },
 
     addColumn(newColumn) {
       this.$set(this.columnsList, this.columnsList.length, newColumn);

@@ -34,8 +34,8 @@ export const dbProvider = {
         using_unit TEXT,
         date_range DATERANGE,
         usage_kw INTEGER,
-        usage_fee NUMERIC,
-        discounted_price BOOLEAN
+        usage_fee INTEGER,
+        discounted_price BOOLEANY
       );
       `);
       console.log("tablo oluşturuldu 2")

@@ -54,32 +54,36 @@ async create(factoryListCreateDTO: FactoryListCreateDTO): Promise<any> {
   }
 }
 
-  async update(id: number, factoryListUpdateDTO: FactoryListUpdateDTO): Promise<any> {
+async update(id: number, factoryListUpdateDTO: FactoryListUpdateDTO): Promise<any> {
+  try {
+    const columns = await this.getColumnNames();
+
+    const columnsWithoutId = columns.filter(column => column !== 'id');
+
+    const updateSet = columnsWithoutId.map((column, index) => `${column} = $${index + 1}`).join(', ');
+
+    const updateValues = columnsWithoutId.map(column => factoryListUpdateDTO[column]);
+
+    console.log(updateValues);
+    console.log(updateSet);
+
     const existingRecord = await this.findById(id);
-  
     if (!existingRecord) {
       throw new NotFoundException(`Factory with ID ${id} not found`);
     }
-  
-    try {
-      const result = await this.pool.query(
-        'UPDATE factory_list SET company_name = $1, membership_start_date = $2, membership_end_date = $3, employee_count = $4, free_member = $5 WHERE id = $6 RETURNING *',
-        [
-          factoryListUpdateDTO.company_name,
-          factoryListUpdateDTO.membership_start_date,
-          factoryListUpdateDTO.membership_end_date,
-          factoryListUpdateDTO.employee_count,
-          factoryListUpdateDTO.free_member,
-          id,
-        ],
-      );
-  
-      return result.rows[0];
-    } catch (error) {
-      console.error('Fabrika güncellenirken bir hata oluştu:', error);
-      throw new Error('An error occurred while updating the factory.');
-    }
+
+    const result = await this.pool.query(
+      `UPDATE factory_list SET ${updateSet} WHERE id = $${columnsWithoutId.length + 1} RETURNING *`,
+      [...updateValues, id]
+    );
+
+    return result.rows[0];
+  } catch (error) {
+    console.error('An error occurred while updating the factory:', error);
+    throw new Error('An error occurred while updating the factory.');
   }
+}
+
 
   async delete(deleteDTO: DeleteDTO): Promise<void> {
     const { id } = deleteDTO;

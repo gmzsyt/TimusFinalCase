@@ -31,7 +31,6 @@ const useDetailStore = defineStore("detailStore", {
             },
           }
         );
-        console.log(response.da);
         this.setFactoryDetailList(response.data);
       } catch (error) {
       } finally {

@@ -3,34 +3,27 @@
     <Navbar />
     <h1 class="text-center mt-5">Factory List Page</h1>
 
-    <v-alert
-      v-if="addColumnSuccess"
-      type="success"
-      title="Column Added"
-      text="The column has been added successfully."
-    ></v-alert>
+    <v-alert v-if="addColumnSuccess" type="success" title="Column Added"
+      text="The column has been added successfully."></v-alert>
 
-    <v-alert
-      v-if="deleteColumnSuccess"
-      type="success"
-      title="Column Deleted"
-      text="The column has been deleted successfully."
-    ></v-alert>
+    <v-alert v-if="deleteColumnSuccess" type="success" title="Column Deleted"
+      text="The column has been deleted successfully."></v-alert>
 
     <v-container class="d-flex align-center justify-center" fluid>
-      <v-btn @click="openAddColumnModal">Add Column</v-btn>
 
       <v-table>
         <thead>
           <tr>
-            <th v-for="(column, columnIndex) in columnsList" :key="columnIndex" class="text-left" style="background-color: #CEDEBD; color: white;">
+            <th v-for="(column, columnIndex) in columnsList" :key="columnIndex" class="text-left"
+              style="background-color: #CEDEBD; color: white;">
               {{ column }}
-              <!-- Add the delete button with icon next to each column name -->
               <v-btn @click="deleteColumn(column)">
                 <v-icon color="red">mdi-delete</v-icon>
               </v-btn>
             </th>
-            <th>Actions</th>
+            <th>
+              <v-btn @click="openAddColumnModal">Add Column</v-btn>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -50,7 +43,8 @@
     </v-container>
 
     <!-- Add the FactoryListEditModal component -->
-    <factory-list-edit-modal :factory="selectedFactory" ref="editModal" @save-changes="saveChanges"></factory-list-edit-modal>
+    <factory-list-edit-modal :factory="selectedFactory" ref="editModal"
+      @save-changes="saveChanges"></factory-list-edit-modal>
 
     <!-- Add the FactoryListAddColumnModal component -->
     <factory-list-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-list-add-column-modal>
@@ -85,7 +79,6 @@ export default {
     const columnStore = useColumns();
     const factoryList = ref(factoryStore.getFactoryList);
     const columnsList = ref(columnStore.getColumns);
-
     onMounted(() => {
       factoryStore.getAllFactoryList();
       columnStore.getAllColumns();
@@ -94,7 +87,6 @@ export default {
     watchEffect(() => {
       factoryList.value = factoryStore.getFactoryList;
       columnsList.value = columnStore.getColumns;
-      console.log('columnsList changed. Re-rendering...');
     });
 
     return {

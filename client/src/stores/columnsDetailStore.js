@@ -19,7 +19,6 @@ const useColumnsDetail = defineStore("columnDetailStore", {
 
       try {
         pageStore.setLoading(true);
-
         const response = await axios.get(
           `http://localhost:3000/api/factoryDetail/getColumnNamesFactoryDetailTable`,
           {
@@ -28,6 +27,7 @@ const useColumnsDetail = defineStore("columnDetailStore", {
             },
           }
         );
+        console.log("columns detail ",response.data)
         this.setColumnsDetail(response.data);
       } catch (error) {
         console.error("Giriş başarısız:", error.message);

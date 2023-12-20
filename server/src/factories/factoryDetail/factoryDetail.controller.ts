@@ -31,7 +31,7 @@ export class FactoryDetailController {
     return this.factoryDetailService.delete(id);
   }
 
-  @Delete('removeColumnFactoryListTable/:columnName')
+  @Delete('removeColumnFactoryDetailTable/:columnName')
   async removeColumn(@Param('columnName') columnName: string): Promise<any> {
     try {
       await this.factoryDetailService.removeColumn(columnName);
