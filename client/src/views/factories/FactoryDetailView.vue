@@ -1,70 +1,135 @@
 <template>
-    <div>
-      <Navbar />
-      <h1 class="text-center mt-5">Fabrica List Page</h1>
-  
-      <v-container class="d-flex align-center justify-center" fluid>
-        <v-table>
-          <thead>
-            <tr>
-              <th class="text-left" style="background-color: #CEDEBD; color: white;">Unit Used</th> 
-              <th class="text-left" style="background-color: #CEDEBD; color: white;">Date Range</th>
-              <th class="text-left" style="background-color: #CEDEBD; color: white;">Usage(kw)</th>
-              <th class="text-left" style="background-color: #CEDEBD; color: white;">Usage Fee</th>
-              <th class="text-left" style="background-color: #CEDEBD; color: white;">Discounted Price</th>
-              
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(factory, index) in factoryDetailList" :key="index" style="background-color: #9EB384;">
-              <td>{{ factory.using_unit }}</td>
-              <td>{{ factory.date_range }}</td>
-              <td>{{ factory.usage_kw }}</td>
-              <td>{{ factory.usage_fee }}</td>
-              <td>{{ factory.discounted_price}}</td>
-              <td>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-container>
-    </div>
-  </template>
-  
-  <script>
-  import Navbar from '@/components/NavbarComp.vue';
-  import useDetailStore from '@/stores/factoryDetailStore';
-  import { ref, onMounted, watchEffect } from 'vue';
+  <div>
+    <Navbar />
+    <h1 class="text-center mt-5">Factory Detail Page</h1>
 
-  
-  export default {
-    components: {
-      Navbar,
-    },
-    data() {
-      return {
-      };
-    },
-    setup() {
-    const detailStore = useDetailStore();
-    const factoryDetailList = ref(detailStore.getFactoryDetailList)
+    <v-alert
+      v-if="addColumnSuccess"
+      type="success"
+      title="Column Added"
+      text="The column has been added successfully."
+    ></v-alert>
 
-    onMounted(() => {
-    detailStore.getAllFactoryDetail();
-  });
-  
-  watchEffect(() => {
-    factoryDetailList.value = detailStore.getFactoryDetailList;
-  });
+    <v-alert
+      v-if="deleteColumnSuccess"
+      type="success"
+      title="Column Deleted"
+      text="The column has been deleted successfully."
+    ></v-alert>
 
+    <v-container class="d-flex align-center justify-center" fluid>
+      <!-- <v-btn @click="openAddColumnModal">Add Column</v-btn> -->
+
+      <v-table>
+        <thead>
+          <tr>
+            <th v-for="(column, columnIndex) in columnsList" :key="columnIndex" class="text-left" style="background-color: #CEDEBD; color: white;">
+              {{ column }}
+              <!-- <v-btn @click="deleteColumn(column)">
+                <v-icon color="red">mdi-delete</v-icon>
+              </v-btn> -->
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+  <tr v-for="(factoryDetail, index) in factoryDetailList" :key="index" style="background-color: #9EB384;">
+    <td v-for="(value, key) in factoryDetail" :key="key">
+      {{ value }}
+    </td>
+  </tr>
+</tbody>
+      </v-table>
+    </v-container>
+
+    <!-- <factory-list-edit-modal :factory="selectedFactory" ref="editModal" @save-changes="saveChanges"></factory-list-edit-modal> -->
+
+    <!-- <factory-list-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-list-add-column-modal> -->
+  </div>
+</template>
+
+<script>
+import Navbar from '@/components/NavbarComp.vue';
+// import FactoryListEditModal from '@/modals/FactoryListEditModal.vue';
+// import FactoryListAddColumnModal from '@/modals/FactoryListAddColumnModal.vue';
+import useDetailStore from '@/stores/factoryDetailStore';
+import useColumns from '@/stores/columnsStore';
+import { ref, onMounted, watchEffect } from 'vue';
+import useUserStore from '@/stores/userStore';
+import axios from 'axios';
+
+export default {
+  components: {
+    Navbar,
+    // FactoryListEditModal,
+    // FactoryListAddColumnModal,
+  },
+  data() {
     return {
-      factoryDetailList,
+      selectedFactory: null,
+      addColumnSuccess: false,
+      deleteColumnSuccess: false,
     };
   },
+  setup() {
+    const factoryDetailStore = useDetailStore();
+    const columnStore = useColumns();
+    const factoryDetailList = ref(factoryDetailStore.getFactoryDetailList);
+    const columnsList = ref(columnStore.getColumns);
 
-  
-    methods: {
-    },
-  };
-  </script>
-  
+    onMounted(() => {
+      factoryDetailStore.getAllFactoryDetail();
+      columnStore.getAllColumns();
+    });
+
+    watchEffect(() => {
+      factoryDetailList.value = factoryDetailStore.getFactoryDetailList;
+      columnsList.value = columnStore.getColumns;
+    });
+    console.log('içerde',factoryDetailList)
+    return {
+      factoryDetailList,
+      columnsList,
+    };
+  },
+  methods: {
+
+    // addColumn(newColumn) {
+    //   this.$set(this.columnsList, this.columnsList.length, newColumn);
+    //   this.factoryDetailList.forEach(factoryDetail => {
+    //     this.$set(factoryDetail, newColumn.name, null);
+    //   });
+    //   this.addColumnSuccess = true;
+    //   setTimeout(() => {
+    //     this.addColumnSuccess = false;
+    //   }, 2000);
+    // },
+    // async deleteColumn(columnName) {
+    //   try {
+    //     const userStore = useUserStore();
+    //     const token = userStore.getToken;
+    //     await axios.delete(`http://localhost:3000/api/factoryDetail/removeColumnFactoryDetailTable/${columnName}`, {
+    //       headers: {
+    //         authorization: `Bearer ${token} `,
+    //       },
+    //     });
+    //     const columnIndex = this.columnsList.indexOf(columnName);
+    //     if (columnIndex !== -1) {
+    //       this.columnsList.splice(columnIndex, 1);
+    //       this.factoryDetailList.forEach(factoryDetail => {
+    //         delete factoryDetail[columnName];
+    //       });
+    //       this.deleteColumnSuccess = true;
+    //       setTimeout(() => {
+    //         this.deleteColumnSuccess = false;
+    //       }, 2000);
+    //     }
+    //   } catch (error) {
+    //     console.error('An error occurred while removing the column:', error);
+    //   }
+    // },
+    // openAddColumnModal() {
+    //   this.$refs.addColumnModal.dialog = true;
+    // },
+  },
+};
+</script>

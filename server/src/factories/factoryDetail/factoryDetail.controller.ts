@@ -10,7 +10,7 @@ import { JwtAuthGuard } from 'src/auth/jwt/jwtAuthGuard';
 export class FactoryDetailController {
   constructor(private readonly factoryDetailService: FactoryDetailService) {}
 
-  @Get('FactoryToDetail:factoryId')
+  @Get('factory/:factoryId')
   findAll(@Param('factoryId') factoryId: number) {
     return this.factoryDetailService.findAll(factoryId);
   }
