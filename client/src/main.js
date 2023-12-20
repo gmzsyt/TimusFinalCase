@@ -26,7 +26,8 @@ const i18n = createI18n({
       viewDetail: "View Details",
       edit: "Edit",
       FactoryListPage: "Factory List Table",
-      FactoryDetailPage:"Factory Detail Table"
+      FactoryDetailPage:"Factory Detail Table",
+      appname: "Factory Labels"
     },
     tr: {
       settings: "Ayarlar",
@@ -43,7 +44,12 @@ const i18n = createI18n({
       viewDetail: "Detayları Göster",
       edit: "Düzenle",
       FactoryListPage: "Fabrika Listesi Tablosu",
-      FactoryDetailPage:"Fabrika Detay Tablosu "
+      FactoryDetailPage:"Fabrika Detay Tablosu ",
+      appname: "Fabrika Etiketleri"
+      
+
+
+
     }
   }
 })

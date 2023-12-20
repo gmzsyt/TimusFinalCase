@@ -70,11 +70,9 @@ export default {
         await authStore.login(this.user.username, this.user.password);
         this.$router.push('/');
 
-        // Show success message
         this.showSnackbar('Login successful', 'success');
       } catch (error) {
         console.error('Login failed:', error.message);
-        // Show error message
         this.showSnackbar('Login failed. Please check your credentials.', 'error');
       }
     },

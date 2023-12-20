@@ -1,9 +1,13 @@
 <template>
   <v-container class="text-center">
     <v-app>
-      <v-app-bar app dark color="#FAF1E4">
-        <!-- <v-img src="@/assets/logos.png" class="mr-4 align-start"></v-img> -->
-        <v-toolbar-title>Vuetify App</v-toolbar-title>
+      <v-app-bar app dark color="#CEDEBD">
+         <v-btn icon @click="goToHome" flat>
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
+      <v-btn @click="goToHome" flat>
+        <v-toolbar-title style="cursor: pointer;">{{$t('appname')}}</v-toolbar-title>
+      </v-btn>
 
         <v-spacer></v-spacer>
 
@@ -69,9 +73,11 @@ export default {
     goToDashboard() {
       this.$router.push('/fabricaList');
     },
+    goToHome(){
+      this.$router.push('/');
+
+    }
   },
 };
 </script>
 
-<style scoped>
-</style>

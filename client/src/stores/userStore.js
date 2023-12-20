@@ -48,7 +48,6 @@ const useUserStore = defineStore('userStore', {
 
     },
     logout() {
-      console.log("asssssssssss")
       this.userId = null;
       this.userName = null;
       this.refreshToken = null;

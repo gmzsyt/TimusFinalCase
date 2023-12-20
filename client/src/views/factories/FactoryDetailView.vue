@@ -136,9 +136,7 @@ export default {
     },
 
     openAddColumnModal() {
-      console.log('Add Column button clicked!');
       this.$refs.addColumnModal.dialog = true;
-      console.log(this.$refs.addColumnModal)
     },
   },
 };
@@ -146,7 +144,7 @@ export default {
 <style scoped>
 .harrypotter{
   position: relative;
-  top: -280px;
+  top: -400px;
 }
 
 </style>

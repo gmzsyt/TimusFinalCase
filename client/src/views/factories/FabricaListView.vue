@@ -60,6 +60,7 @@ import useColumns from '@/stores/columnsStore';
 import { ref, onMounted, watchEffect } from 'vue';
 import useUserStore from '@/stores/userStore';
 import axios from 'axios';
+import 'dotenv'
 
 export default {
   components: {
@@ -68,6 +69,7 @@ export default {
     FactoryListAddColumnModal,
   },
   data() {
+     
     return {
       selectedFactory: null,
       addColumnSuccess: false,
@@ -82,6 +84,7 @@ export default {
     onMounted(() => {
       factoryStore.getAllFactoryList();
       columnStore.getAllColumns();
+    
     });
 
     watchEffect(() => {
@@ -157,7 +160,7 @@ export default {
 }
 .harry{
   position: relative;
-  top: -600px;
+  top: -400px;
 
 }
 

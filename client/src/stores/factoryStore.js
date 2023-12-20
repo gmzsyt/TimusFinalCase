@@ -33,7 +33,6 @@ const useFactoryStore = defineStore("factoryStore", {
           }
         );
         this.setFactoryList(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Giriş başarısız:", error.message);
       } finally {
@@ -45,7 +44,6 @@ const useFactoryStore = defineStore("factoryStore", {
     },
     setDetailId(id) {
       this.detailId = id;
-      console.log("Factory Detail id ",id);
     },
   },
 });

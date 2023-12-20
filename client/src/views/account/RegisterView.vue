@@ -11,7 +11,7 @@
         ></v-text-field>
         <v-text-field v-model="user.email" :error-messages="emailErrors" label="Email" outlined type="email"></v-text-field>
         <v-text-field v-model="user.password" :error-messages="passwordErrors" label="Password" outlined type="password"></v-text-field>
-
+       
         <v-select
           v-model="user.role"
           :items="roles"
@@ -19,8 +19,11 @@
           outlined
           :error-messages="roleErrors"
         ></v-select>
+        <v-btn icon @click="toggleLanguage" :style="{ 'margin-right': '8px','color': 'white', 'background-color': '#435334' }">
+          <v-icon>mdi-translate</v-icon>
+        </v-btn>
 
-        <v-btn type="submit" color="primary" block class="mt-4">Register</v-btn>
+        <v-btn type="submit" color="primary" block class="mt-4">{{$t('sigin')}}</v-btn>
       </v-form>
 
       <div class="mt-4">
@@ -50,6 +53,9 @@ export default {
     };
   },
   methods: {
+    toggleLanguage() {
+      this.$i18n.locale = this.$i18n.locale === 'en' ? 'tr' : 'en';
+    },
     validateUsername() {
       if (this.user.username.length !== 8) {
         this.usernameErrors = ['Username must be 8 characters long'];
@@ -61,7 +67,6 @@ export default {
       try {
         const response = await axios.post('http://localhost:3000/api/auth/register', this.user);
 
-        console.log(response.data);
 
         this.$router.push('/login');
       } catch (error) {
