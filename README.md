@@ -27,6 +27,16 @@ The project consists of two main parts:
 
 3. **Elasticsearch:** Modules in the `elasticsearch` folder provide interaction with Elasticsearch.
 
+# User Login
+
+This project includes a web application where users can log in. Below is an example of a simple user login screen:
+
+## User Login Screen
+
+The user login screen includes email and password fields. When users fill out the form without entering the required fields, error messages are displayed.
+
+![User Login Screen](file:///C:/Users/User/Desktop/Ekran%20g%C3%B6r%C3%BCnt%C3%BCs%C3%BC%202023-12-21%20002118.png)
+
 ### User Rotting
 
 Routing operations based on user registration status are done in the Vue.js routing file. The relevant file is shaped like this
