@@ -73,10 +73,8 @@ export default {
       const factoryID = this.factory.id;
 
       try {
-        // Validate the form before making the request
         const formValid = await this.$refs.form.validate();
         if (formValid) {
-          // Explicitly set "id" in the request payload
           const requestData = {
             ...this.columnValues,
             id: factoryID,
@@ -92,11 +90,9 @@ export default {
             }
           );
 
-          // Check if the update was successful
           if (response.status === 200) {
             this.$emit('factory-updated', { id: factoryID, updatedValues: this.columnValues });
             factoryStore.getAllFactoryList()
-            // Close the dialog
             this.closeModal();
           } else {
             console.error('Failed to update factory. Status:', response.status);

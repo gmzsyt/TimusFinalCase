@@ -31,7 +31,9 @@
   </template>
   
   <script>
-  import useUserStore from "../stores/userStore";
+  import useColumnsDetail from "@/stores/columnsDetailStore";
+import useUserStore from "../stores/userStore";
+
   
   export default {
     props: {
@@ -54,6 +56,8 @@
         this.dialog = false;
       },
       async saveChanges() {
+
+        const columns = useColumnsDetail();
         if (!this.columnInfo.columnName || !this.columnInfo.columnType) {
           this.valid = false;
           this.errorMessage = 'Please fill out all required fields.';
@@ -80,6 +84,7 @@
           this.valid = true;
           this.errorMessage = '';
           this.$emit('columnAdded');
+          columns.getAllColumnsDetail();
           this.closeModal();
         } catch (error) {
           console.error('An error occurred while adding the column:', error);

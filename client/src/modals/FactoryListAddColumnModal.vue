@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import useColumns from "@/stores/columnsStore";
 import useUserStore from "../stores/userStore";
 
 export default {
@@ -55,6 +56,7 @@ export default {
       this.dialog = false;
     },
     async saveChanges() {
+      const column = useColumns();
       if (!this.columnInfo.columnName || !this.columnInfo.columnType) {
         this.valid = false;
         this.errorMessage = 'Please fill out all required fields.';
@@ -81,6 +83,7 @@ export default {
         this.valid = true;
         this.errorMessage = '';
         this.$emit('columnAdded');
+        column.getAllColumns()
         this.closeModal();
       } catch (error) {
         console.error('An error occurred while adding the column:', error);

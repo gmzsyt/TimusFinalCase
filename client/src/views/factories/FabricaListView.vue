@@ -15,9 +15,9 @@
         <thead>
           <tr>
             <th v-for="(column, columnIndex) in columnsList" :key="columnIndex" class="text-left"
-              style="background-color: #CEDEBD; color: white;">
+              style="background-color: #435334; color: white;">
               {{ column }}
-              <v-btn @click="deleteColumn(column)">
+              <v-btn color=#435334 @click="deleteColumn(column)">
                 <v-icon color="red">mdi-delete</v-icon>
               </v-btn>
             </th>
@@ -42,11 +42,9 @@
       </v-table>
     </v-container>
 
-    <!-- Add the FactoryListEditModal component -->
     <factory-list-edit-modal :factory="selectedFactory" ref="editModal"
       @save-changes="saveChanges"></factory-list-edit-modal>
 
-    <!-- Add the FactoryListAddColumnModal component -->
     <factory-list-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-list-add-column-modal>
   </div>
 </template>

@@ -15,12 +15,16 @@
         <thead>
           <tr>
             <th v-for="(column, columnIndex) in columnsList" :key="columnIndex" class="text-left"
-              style="background-color: #CEDEBD; color: white;">
+              style="background-color: #435334; color: white;">
               {{ column }}
+              <v-btn color=#435334 @click="deleteColumn(column)">
+                <v-icon color="red">mdi-delete</v-icon>
+              </v-btn>
             </th>
             <th>
           <v-btn @click="openAddColumnModal">Add Column</v-btn> 
             </th> 
+            
           </tr>
         </thead>
         <tbody>
@@ -104,30 +108,30 @@ export default {
       }, 2000);
     },
 
-    // async deleteColumn(columnName) {
-    //   try {
-    //     const userStore = useUserStore();
-    //     const token = userStore.getToken;
-    //     await axios.delete(`http://localhost:3000/api/factoryDetail/removeColumnFactoryDetailTable/${columnName}`, {
-    //       headers: {
-    //         authorization: `Bearer ${token} `,
-    //       },
-    //     });
-    //     const columnIndex = this.columnsList.indexOf(columnName);
-    //     if (columnIndex !== -1) {
-    //       this.columnsList.splice(columnIndex, 1);
-    //       this.factoryDetailList.forEach(factoryDetail => {
-    //         delete factoryDetail[columnName];
-    //       });
-    //       this.deleteColumnSuccess = true;
-    //       setTimeout(() => {
-    //         this.deleteColumnSuccess = false;
-    //       }, 2000);
-    //     }
-    //   } catch (error) {
-    //     console.error('An error occurred while removing the column:', error);
-    //   }
-    // },
+    async deleteColumn(columnName) {
+      try {
+        const userStore = useUserStore();
+        const token = userStore.getToken;
+        await axios.delete(`http://localhost:3000/api/factoryDetail/removeColumnFactoryDetailTable/${columnName}`, {
+          headers: {
+            authorization: `Bearer ${token} `,
+          },
+        });
+        const columnIndex = this.columnsList.indexOf(columnName);
+        if (columnIndex !== -1) {
+          this.columnsList.splice(columnIndex, 1);
+          this.factoryDetailList.forEach(factory => {
+            delete factory[columnName];
+          });
+          this.deleteColumnSuccess = true;
+          setTimeout(() => {
+            this.deleteColumnSuccess = false;
+          }, 2000);
+        }
+      } catch (error) {
+        console.error('An error occurred while removing the column:', error);
+      }
+    },
 
     openAddColumnModal() {
       console.log('Add Column button clicked!');

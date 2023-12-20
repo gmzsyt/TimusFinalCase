@@ -107,7 +107,7 @@ export default {
         this.columnValues.start_date = startDate.trim();
         this.columnValues.end_date = endDate.trim();
       }
-
+   
           const requestData = {
             ...this.columnValues,
             id: factoryDetailID,

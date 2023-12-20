@@ -10,6 +10,10 @@
         <v-btn type="submit" color="primary" block class="mt-4 p">Login</v-btn>
       </v-form>
 
+      <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="snackbarTimeout">
+        {{ snackbarMessage }}
+      </v-snackbar>
+
       <div class="mt-4">
         <p class="text-body-2">Don't have an account? <router-link to="/register">Register</router-link></p>
       </div>
@@ -18,7 +22,7 @@
 </template>
 
 <script>
-import useUserStore from './../../stores/userStore'
+import useUserStore from './../../stores/userStore';
 
 export default {
   data() {
@@ -28,13 +32,15 @@ export default {
         password: '',
       },
       rememberMe: false,
+      snackbar: false,
+      snackbarMessage: '',
+      snackbarColor: '',
+      snackbarTimeout: 3000, // Adjust timeout as needed
     };
   },
   mounted() {
-    // Sayfa yüklendiğinde localStorage'de hatırlama bilgisi var mı kontrol et
     const rememberMe = localStorage.getItem('rememberMe');
     if (rememberMe === 'true') {
-      // Hatırla seçeneği işaretliyse, localStorage'den kullanıcı bilgilerini al
       this.user.username = localStorage.getItem('username') || '';
       this.user.password = localStorage.getItem('password') || '';
       this.rememberMe = true;
@@ -45,13 +51,11 @@ export default {
       try {
         const authStore = useUserStore();
 
-        // Beni Hatırla seçeneği işaretliyse, kullanıcı bilgilerini localStorage'e kaydet
         if (this.rememberMe) {
           localStorage.setItem('rememberMe', 'true');
           localStorage.setItem('username', this.user.username);
           localStorage.setItem('password', this.user.password);
         } else {
-          // Beni Hatırla seçeneği işaretli değilse, localStorage'deki bilgileri temizle
           localStorage.removeItem('rememberMe');
           localStorage.removeItem('username');
           localStorage.removeItem('password');
@@ -59,9 +63,19 @@ export default {
 
         await authStore.login(this.user.username, this.user.password);
         this.$router.push('/');
+
+        // Show success message
+        this.showSnackbar('Login successful', 'success');
       } catch (error) {
         console.error('Login failed:', error.message);
+        // Show error message
+        this.showSnackbar('Login failed. Please check your credentials.', 'error');
       }
+    },
+    showSnackbar(message, color) {
+      this.snackbarMessage = message;
+      this.snackbarColor = color;
+      this.snackbar = true;
     },
   },
 };
@@ -73,3 +87,4 @@ export default {
   font-size: 1.2rem;
 }
 </style>
+
