@@ -42,7 +42,7 @@ export class FactoryDetailController {
     }
   }
 
-  @Post('addColumnFactoryListTable')
+  @Post('addColumnFactoryDetailTable')
   async addColumn(
     @Body() columnInfo: { columnName: string, columnType: string },
   ): Promise<any> {
