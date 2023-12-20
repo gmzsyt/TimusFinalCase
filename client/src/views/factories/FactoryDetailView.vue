@@ -3,27 +3,20 @@
     <Navbar />
     <h1 class="text-center mt-5">Factory Detail Page</h1>
 
-    <v-alert
-      v-if="addColumnSuccess"
-      type="success"
-      title="Column Added"
-      text="The column has been added successfully."
-    ></v-alert>
+    <v-alert v-if="addColumnSuccess" type="success" title="Column Added"
+      text="The column has been added successfully."></v-alert>
 
-    <v-alert
-      v-if="deleteColumnSuccess"
-      type="success"
-      title="Column Deleted"
-      text="The column has been deleted successfully."
-    ></v-alert>
+    <v-alert v-if="deleteColumnSuccess" type="success" title="Column Deleted"
+      text="The column has been deleted successfully."></v-alert>
 
     <v-container class="d-flex align-center justify-center" fluid>
-      <!-- <v-btn @click="openAddColumnModal">Add Column</v-btn> -->
+      <v-btn @click="openAddColumnModal">Add Column</v-btn>
 
       <v-table>
         <thead>
           <tr>
-            <th v-for="(column, columnIndex) in columnsList" :key="columnIndex" class="text-left" style="background-color: #CEDEBD; color: white;">
+            <th v-for="(column, columnIndex) in columnsList" :key="columnIndex" class="text-left"
+              style="background-color: #CEDEBD; color: white;">
               {{ column }}
               <!-- <v-btn @click="deleteColumn(column)">
                 <v-icon color="red">mdi-delete</v-icon>
@@ -32,25 +25,25 @@
           </tr>
         </thead>
         <tbody>
-  <tr v-for="(factoryDetail, index) in factoryDetailList" :key="index" style="background-color: #9EB384;">
-    <td v-for="(value, key) in factoryDetail" :key="key">
-      {{ value }}
-    </td>
-  </tr>
-</tbody>
+          <tr v-for="(factoryDetail, index) in factoryDetailList" :key="index" style="background-color: #9EB384;">
+            <td v-for="(value, key) in factoryDetail" :key="key">
+              {{ value }}
+            </td>
+          </tr>
+        </tbody>
       </v-table>
     </v-container>
 
     <!-- <factory-list-edit-modal :factory="selectedFactory" ref="editModal" @save-changes="saveChanges"></factory-list-edit-modal> -->
 
-    <!-- <factory-list-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-list-add-column-modal> -->
+    <factory-detail-add-column-modal ref="addColumnModal" @save-changes="addColumn"></factory-detail-add-column-modal>
   </div>
 </template>
 
 <script>
 import Navbar from '@/components/NavbarComp.vue';
 // import FactoryListEditModal from '@/modals/FactoryListEditModal.vue';
-// import FactoryListAddColumnModal from '@/modals/FactoryListAddColumnModal.vue';
+import FactoryDetailAddColumnModal from '@/modals/FactoryDetailAddColumnModel.vue';
 import useDetailStore from '@/stores/factoryDetailStore';
 import useColumns from '@/stores/columnsStore';
 import { ref, onMounted, watchEffect } from 'vue';
@@ -61,7 +54,7 @@ export default {
   components: {
     Navbar,
     // FactoryListEditModal,
-    // FactoryListAddColumnModal,
+    FactoryDetailAddColumnModal
   },
   data() {
     return {
@@ -85,7 +78,6 @@ export default {
       factoryDetailList.value = factoryDetailStore.getFactoryDetailList;
       columnsList.value = columnStore.getColumns;
     });
-    console.log('içerde',factoryDetailList)
     return {
       factoryDetailList,
       columnsList,
@@ -93,16 +85,17 @@ export default {
   },
   methods: {
 
-    // addColumn(newColumn) {
-    //   this.$set(this.columnsList, this.columnsList.length, newColumn);
-    //   this.factoryDetailList.forEach(factoryDetail => {
-    //     this.$set(factoryDetail, newColumn.name, null);
-    //   });
-    //   this.addColumnSuccess = true;
-    //   setTimeout(() => {
-    //     this.addColumnSuccess = false;
-    //   }, 2000);
-    // },
+    addColumn(newColumn) {
+      this.$set(this.columnsList, this.columnsList.length, newColumn);
+      this.factoryDetailList.forEach(factoryDetail => {
+        this.$set(factoryDetail, newColumn.name, null);
+      });
+      this.addColumnSuccess = true;
+      setTimeout(() => {
+        this.addColumnSuccess = false;
+      }, 2000);
+    },
+
     // async deleteColumn(columnName) {
     //   try {
     //     const userStore = useUserStore();
@@ -127,9 +120,12 @@ export default {
     //     console.error('An error occurred while removing the column:', error);
     //   }
     // },
-    // openAddColumnModal() {
-    //   this.$refs.addColumnModal.dialog = true;
-    // },
+
+    openAddColumnModal() {
+      console.log('Add Column button clicked!');
+      this.$refs.addColumnModal.dialog = true;
+      console.log(this.$refs.addColumnModal)
+    },
   },
 };
 </script>
