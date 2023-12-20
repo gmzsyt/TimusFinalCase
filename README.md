@@ -27,7 +27,11 @@ The project consists of two main parts:
 
 3. **Elasticsearch:** Modules in the `elasticsearch` folder provide interaction with Elasticsearch.
 
-4. 
+### User Rotting
+
+Routing operations based on user registration status are done in the Vue.js routing file. The relevant file is shaped like this
+
+
 ## Configuration
 
 Some critical configuration details used within the project are stored in the `.env` file. Before running the project locally or in any other environment, you should fill in the following variables:
