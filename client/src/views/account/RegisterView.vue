@@ -9,8 +9,20 @@
           outlined
           @input="validateUsername"
         ></v-text-field>
-        <v-text-field v-model="user.email" :error-messages="emailErrors" label="Email" outlined type="email"></v-text-field>
-        <v-text-field v-model="user.password" :error-messages="passwordErrors" label="Password" outlined type="password"></v-text-field>
+        <v-text-field
+          v-model="user.email"
+          :error-messages="emailErrors"
+          label="Email"
+          outlined
+          type="email"
+        ></v-text-field>
+        <v-text-field
+          v-model="user.password"
+          :error-messages="passwordErrors"
+          label="Password"
+          outlined
+          type="password"
+        ></v-text-field>
        
         <v-select
           v-model="user.role"
@@ -57,17 +69,41 @@ export default {
       this.$i18n.locale = this.$i18n.locale === 'en' ? 'tr' : 'en';
     },
     validateUsername() {
-      if (this.user.username.length !== 8) {
-        this.usernameErrors = ['Username must be 8 characters long'];
-      } else {
-        this.usernameErrors = [];
+    this.usernameErrors = [];
+
+    if (this.user.username.length !== 8) {
+      this.usernameErrors.push('Username must be 8 characters long');
+    }
+    },
+    validatePassword() {
+      this.passwordErrors = [];
+
+      if (!/\d/.test(this.user.password)) {
+        this.passwordErrors.push('Password must contain a numeric value');
+      }
+
+      if (!/[A-Z]/.test(this.user.password)) {
+        this.passwordErrors.push('Password must contain at least one uppercase letter');
+      }
+    },
+    validateEmail() {
+      this.emailErrors = [];
+
+      if (!/\S+@\S+\.\S+/.test(this.user.email)) {
+        this.emailErrors.push('Invalid email address');
       }
     },
     async register() {
+      this.validateUsername();
+      this.validatePassword();
+      this.validateEmail();
+
+      if (this.usernameErrors.length || this.passwordErrors.length || this.emailErrors.length) {
+        return; 
+      }
+
       try {
         const response = await axios.post('http://localhost:3000/api/auth/register', this.user);
-
-
         this.$router.push('/login');
       } catch (error) {
         this.usernameErrors = error.response.data.message.username || [];

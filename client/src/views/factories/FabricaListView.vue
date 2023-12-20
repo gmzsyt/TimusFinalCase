@@ -160,7 +160,7 @@ export default {
 }
 .harry{
   position: relative;
-  top: -400px;
+  top: -600px;
 
 }
 

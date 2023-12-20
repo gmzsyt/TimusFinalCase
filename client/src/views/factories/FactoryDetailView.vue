@@ -144,7 +144,7 @@ export default {
 <style scoped>
 .harrypotter{
   position: relative;
-  top: -400px;
+  top: -600px;
 }
 
 </style>

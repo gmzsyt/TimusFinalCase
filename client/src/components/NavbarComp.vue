@@ -20,7 +20,7 @@
         </template>
 
         <template v-if="!localToken">
-          <v-btn @click="goToLogin" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">{{$t('sign in')}}</v-btn>
+          <v-btn @click="goToLogin" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">{{$t('sigin')}}</v-btn>
           <v-btn @click="goToRegister" :style="{ 'color': 'white', 'background-color': '#435334', 'margin-right': '8px' }">{{$t('settings')}}</v-btn>
         </template>
 
