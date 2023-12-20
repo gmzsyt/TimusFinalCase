@@ -109,45 +109,56 @@ async update(id: number, factoryDetailUpdateDTO: FactoryDetailUpdateDTO): Promis
         ) as column_exists;
       `;
       const checkResult = await this.pool.query(checkQuery);
-
+  
       if (checkResult.rows[0].column_exists) {
-        console.log(`Sütun '${columnName}' zaten '${tableName}' tablosunda mevcut`);
+        console.log(`Column '${columnName}' already exists in table '${tableName}'`);
       }
+  
       const addQuery = `ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnType}`;
       await this.pool.query(addQuery);
-
-      console.log(`Sütun '${columnName}' başarıyla '${tableName}' tablosuna eklendi`);
+  
+      console.log(`Column '${columnName}' added successfully to table '${tableName}'`);
     } catch (error) {
-      console.error('Sütun eklenirken bir hata oluştu:', error);
-      throw new Error('Sütun eklenirken bir hata oluştu.');
+      console.error('An error occurred while adding the column:', error);
+      throw new Error('An error occurred while adding the column.');
+    }
+  }
+  
+
+  async removeColumn(columnName: string): Promise<void> {
+    const tableName = 'factory_detail';
+    try {
+      const checkQuery = `
+        SELECT EXISTS (
+          SELECT 1
+          FROM information_schema.columns
+          WHERE table_name = '${tableName}' AND column_name = '${columnName}'
+        ) as column_exists;
+      `;
+      const checkResult = await this.pool.query(checkQuery);
+
+      if (!checkResult.rows[0].column_exists) {
+        console.log(`Column '${columnName}' does not exist in table '${tableName}'`);
+        throw new NotFoundException(`Column '${columnName}' not found.`);
+      }
+
+      const removeQuery = `ALTER TABLE ${tableName} DROP COLUMN ${columnName}`;
+      await this.pool.query(removeQuery);
+
+      console.log(`Column '${columnName}' removed successfully from table '${tableName}'`);
+    } catch (error) {
+      console.error('An error occurred while removing the column:', error);
+      throw new Error('An error occurred while removing the column.');
     }
   }
 
-//   async removeColumn(columnName: string): Promise<void> {
-//     const tableName = 'factory_detail';
-//     try {
-//         const checkQuery = `
-//             SELECT EXISTS (
-//                 SELECT 1
-//                 FROM information_schema.columns
-//                 WHERE table_name = '${tableName}' AND column_name = '${columnName}'
-//             ) as column_exists;
-//         `;
-//         const checkResult = await this.pool.query(checkQuery);
+  async getColumnNames(): Promise<string[]> {
+    const queryResult = await this.pool.query('SELECT column_name FROM information_schema.columns WHERE table_name = $1', ['factory_detail']);
+    const columnNames = queryResult.rows.map((row: any) => row.column_name);
+    console.log('Query Result:', queryResult);
 
-//         if (!checkResult.rows[0].column_exists) {
-//             console.log(`Sütun '${columnName}' '${tableName}' tablosunda mevcut değil`);
-//             throw new NotFoundException(`Sütun '${columnName}' bulunamadı.`);
-//         }
+    return columnNames;
+  }
 
-//         // Sütunu kaldır
-//         const removeQuery = `ALTER TABLE ${tableName} DROP COLUMN ${columnName}`;
-//         await this.pool.query(removeQuery);
-
-//         console.log(`Sütun '${columnName}' başarıyla '${tableName}' tablosundan kaldırıldı`);
-//     } catch (error) {
-//         console.error('Sütun kaldırma sırasında bir hata oluştu:', error);
-//         throw new Error('Sütun kaldırma sırasında bir hata oluştu.');
-//     }
-// }
+ 
     }
