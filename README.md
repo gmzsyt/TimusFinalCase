@@ -6,7 +6,7 @@ This project contains a full stack web application prepared for the Timus platfo
 
 The project consists of two main parts:
 
-1. **Node.js Server:** Located in the `server` folder. The server-side is used to connect to Timus APIs and process the necessary data.
+1. **Node.js Server:** Located in the `server` folder. The server-side is used to connect to my APIs and process the necessary data.
 
 2. **Vue.js Client:** Located in the `client` folder. The client-side uses Vue.js for the user interface and displaying Timus data.
 
