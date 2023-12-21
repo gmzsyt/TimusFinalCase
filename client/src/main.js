@@ -28,7 +28,8 @@ const i18n = createI18n({
       FactoryListPage: "Factory List Table",
       FactoryDetailPage:"Factory Detail Table",
       appname: "Factory Labels",
-      welcome: "Welcome to the Factory Labels!"
+      welcome: "Welcome to the Factory Labels!",
+      alreadyac: "Already have an account?"
     },
     tr: {
       settings: "Ayarlar",
@@ -47,12 +48,8 @@ const i18n = createI18n({
       FactoryListPage: "Fabrika Listesi Tablosu",
       FactoryDetailPage:"Fabrika Detay Tablosu ",
       appname: "Fabrika Etiketleri",
-      welcome: "Factory Etiketlerine Hoş Geldin!"
-
-      
-
-
-
+      welcome: "Factory Etiketlerine Hoş Geldin!",
+      alreadyac: "Hesabınız var mı?"
     }
   }
 })
