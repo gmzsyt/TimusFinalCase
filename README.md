@@ -46,7 +46,8 @@ This project includes a web application where users can log in. Below is an exam
 
 The user login screen includes email and password fields. When users fill out the form without entering the required fields, error messages are displayed.
 
-![Uploading Ekran görüntüsü 2023-12-21 002118.png…]()
+![Ekran görüntüsü 2023-12-21 164105](https://github.com/gmzsyt/TimusFinalCase/assets/82291548/c2257ca7-3207-4291-bb4c-b8b734f87c65)
+
 
 # Language Option
 
