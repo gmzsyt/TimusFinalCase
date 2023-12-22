@@ -97,7 +97,7 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://localhost:3000/api/auth/register', this.user);
+        const response = await axios.post('/api/auth/register', this.user);
         this.$router.push('/login');
       } catch (error) {
         this.usernameErrors = error.response.data.message.username || [];

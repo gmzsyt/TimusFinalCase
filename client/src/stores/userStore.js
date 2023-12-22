@@ -27,7 +27,7 @@ const useUserStore = defineStore('userStore', {
 
       try {
         pageStore.setLoading(true);
-        const response = await axios.post('http://localhost:3000/api/auth/login', {
+        const response = await axios.post('/api/auth/login', {
           username: email,
           password: password,
         });

@@ -114,7 +114,7 @@ export default {
       try {
         const userStore = useUserStore();
         const token = userStore.getToken;
-        await axios.delete(`http://localhost:3000/api/factoryDetail/removeColumnFactoryDetailTable/${columnName}`, {
+        await axios.delete(`/api/factoryDetail/removeColumnFactoryDetailTable/${columnName}`, {
           headers: {
             authorization: `Bearer ${token} `,
           },

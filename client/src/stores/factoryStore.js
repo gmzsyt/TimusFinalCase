@@ -25,7 +25,7 @@ const useFactoryStore = defineStore("factoryStore", {
         pageStore.setLoading(true);
 
         const response = await axios.get(
-          "http://localhost:3000/api/factoryList",
+          "/api/factoryList",
           {
             headers: {
               authorization: `Bearer ${token} `,

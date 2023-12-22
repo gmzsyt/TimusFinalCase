@@ -24,7 +24,7 @@ const useDetailStore = defineStore("detailStore", {
         pageStore.setLoading(true);
 
         const response = await axios.get(
-          `http://localhost:3000/api/factoryDetail/factory/${detailId}`,
+          `/api/factoryDetail/factory/${detailId}`,
           {
             headers: {
               authorization: `Bearer ${token} `,

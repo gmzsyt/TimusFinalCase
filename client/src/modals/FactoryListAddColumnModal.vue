@@ -68,7 +68,7 @@ export default {
         const token = userStore.getToken;
 
         await this.$axios.post(
-          `http://localhost:3000/api/factoryList/addColumnFactoryListTable`,
+          `/api/factoryList/addColumnFactoryListTable`,
           {
             columnName: this.columnInfo.columnName,
             columnType: this.columnInfo.columnType,

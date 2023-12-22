@@ -21,7 +21,7 @@ const useColumns = defineStore("columnStore", {
         pageStore.setLoading(true);
 
         const response = await axios.get(
-          `http://localhost:3000/api/factoryList/getColumnNames`,
+          `/api/factoryList/getColumnNames`,
           {
             headers: {
               authorization: `Bearer ${token} `,

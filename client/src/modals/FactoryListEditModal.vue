@@ -81,7 +81,7 @@ export default {
           };
 
           const response = await axios.put(
-            `http://localhost:3000/api/factoryList/${factoryID}`,
+            `/api/factoryList/${factoryID}`,
             requestData,
             {
               headers: {

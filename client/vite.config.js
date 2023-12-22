@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vuetify from 'vite-plugin-vuetify';
 import { fileURLToPath, URL } from 'node:url';
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(),
     vuetify({
@@ -17,7 +16,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000/',
+        target: 'https://final-case-server.onrender.com/',
         changeOrigin: true,
         secure: false,
       },

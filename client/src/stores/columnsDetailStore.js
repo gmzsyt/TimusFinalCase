@@ -20,7 +20,7 @@ const useColumnsDetail = defineStore("columnDetailStore", {
       try {
         pageStore.setLoading(true);
         const response = await axios.get(
-          `http://localhost:3000/api/factoryDetail/getColumnNamesFactoryDetailTable`,
+          `/api/factoryDetail/getColumnNamesFactoryDetailTable`,
           {
             headers: {
               authorization: `Bearer ${token} `,
