@@ -1,8 +1,7 @@
-<!-- FactoryListAddColumnModal.vue -->
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <v-card>
-      <v-card-title>Add Column to Factory List</v-card-title>
+      <v-card-title>{{$t('addcolumn')}}</v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid">
           <v-text-field v-model="columnInfo.columnName" label="Column Name"></v-text-field>
@@ -10,7 +9,7 @@
           <v-row v-if="!valid">
             <v-col>
               <v-alert type="error" dense outlined>
-                Please fill out all required fields.
+                {{$t('please')}}
               </v-alert>
             </v-col>
           </v-row>
@@ -24,8 +23,8 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="closeModal">Cancel</v-btn>
-        <v-btn @click="saveChanges" color="primary" >Add Column</v-btn>
+        <v-btn @click="closeModal">{{$t('cancel')}}</v-btn>
+<v-btn @click="saveChanges" color="#435334">{{$t("addcolumn")}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -48,7 +47,7 @@ export default {
         columnName: '',
         columnType: null,
       },
-      columnTypes: ['varchar(255)', 'Number', 'Date'],
+      columnTypes: ['varchar(255)', 'Number', 'Date', 'Boolean'],
     };
   },
   methods: {

@@ -56,16 +56,26 @@ async create(factoryListCreateDTO: FactoryListCreateDTO): Promise<any> {
 
 async update(id: number, factoryListUpdateDTO: FactoryListUpdateDTO): Promise<any> {
   try {
-    const columns = await this.getColumnNames();
+    const columnsMetadata = await this.getColumnMetadata();
 
-    const columnsWithoutId = columns.filter(column => column !== 'id');
+    const columnsWithoutId = columnsMetadata
+      .filter(column => column.columnName !== 'id')
+      .map(column => column.columnName);
+
+    const updateValues = columnsWithoutId.map(columnName => {
+      const columnMetadata = columnsMetadata.find(column => column.columnName === columnName);
+      const dataType = columnMetadata?.dataType;
+
+      if (dataType === 'integer' && typeof factoryListUpdateDTO[columnName] === 'string') {
+        return parseInt(factoryListUpdateDTO[columnName], 10);
+      }
+
+      return factoryListUpdateDTO[columnName];
+    });
+
+    console.log('Update Values:', updateValues); 
 
     const updateSet = columnsWithoutId.map((column, index) => `${column} = $${index + 1}`).join(', ');
-
-    const updateValues = columnsWithoutId.map(column => factoryListUpdateDTO[column]);
-
-    console.log(updateValues);
-    console.log(updateSet);
 
     const existingRecord = await this.findById(id);
     if (!existingRecord) {
@@ -83,6 +93,7 @@ async update(id: number, factoryListUpdateDTO: FactoryListUpdateDTO): Promise<an
     throw new Error('An error occurred while updating the factory.');
   }
 }
+
 
 
   async delete(deleteDTO: DeleteDTO): Promise<void> {
@@ -160,6 +171,19 @@ async update(id: number, factoryListUpdateDTO: FactoryListUpdateDTO): Promise<an
 
     return columnNames;
   }
+
+  async getColumnMetadata(): Promise<{ columnName: string, dataType: string }[]> {
+    const tableName = "factory_list"
+    const queryResult = await this.pool.query('SELECT column_name, data_type FROM information_schema.columns WHERE table_name = $1', [tableName]);
+    const columnMetadata = queryResult.rows.map((row: any) => ({
+        columnName: row.column_name,
+        dataType: row.data_type,
+    }));
+    console.log('Query Result:', queryResult);
+
+    return columnMetadata;
+}
+
 }
 
 

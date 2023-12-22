@@ -1,6 +1,8 @@
 <template>
   <div class="d-flex align-center justify-center" style="height: 100vh">
     <v-sheet width="400" class="mx-auto">
+      <h2 class="text-h5 text-center" style="color: #9EB384 ;margin-bottom: 30px; font-weight: bold;"> {{$t('login')}}</h2> 
+
       <v-form @submit.prevent="login">
         <v-text-field v-model="user.username" label="User Name" outlined></v-text-field>
         <v-text-field v-model="user.password" label="Password" outlined type="password"></v-text-field>
@@ -10,7 +12,7 @@
           <v-icon>mdi-translate</v-icon>
         </v-btn>
 
-        <v-btn type="submit" color="primary" block class="mt-4 p">Login</v-btn>
+        <v-btn type="submit" color= #9EB384 block class="mt-4 p">{{$t('register')}}</v-btn>
       </v-form>
       
 
@@ -38,7 +40,7 @@ export default {
       snackbar: false,
       snackbarMessage: '',
       snackbarColor: '',
-      snackbarTimeout: 3000, // Adjust timeout as needed
+      snackbarTimeout: 3000, 
     };
   },
   mounted() {

@@ -16,20 +16,26 @@ const i18n = createI18n({
       dashboard: "Dashboard",
       logout: "Log Out", 
       sigin: "Sign In",
-      login: "Log In",
+      login: "Sign In",
       username: "User Name",
       password: "Password",
       rememberme: "Remember Me",
       donthave: "Don't have an account?",
-      register: "Register",
-      addcolumn:"Add Column",
+      register: "Sign Up",
+      addcolumn:"Add New Property",
       viewDetail: "View Details",
       edit: "Edit",
       FactoryListPage: "Factory List Table",
       FactoryDetailPage:"Factory Detail Table",
       appname: "Factory Labels",
       welcome: "Welcome to the Factory Labels!",
-      alreadyac: "Already have an account?"
+      alreadyac: "Already have an account?",
+      save: "Save",
+      cancel:"Cancel",
+      degergir:"enter value",
+      columnType: "Özellik Tipi",
+      please: "Please fill out all required fields."
+
     },
     tr: {
       settings: "Ayarlar",
@@ -42,20 +48,27 @@ const i18n = createI18n({
       rememberme: "Beni Hatırla",
       donthave: "Henüz hesabınız yok mu?",
       register: "Kayıt ol",
-      addcolumn:"Sütun Ekle",
+      addcolumn:"Yeni Özellik Ekle",
       viewDetail: "Detayları Göster",
       edit: "Düzenle",
       FactoryListPage: "Fabrika Listesi Tablosu",
       FactoryDetailPage:"Fabrika Detay Tablosu ",
       appname: "Fabrika Etiketleri",
       welcome: "Factory Etiketlerine Hoş Geldin!",
-      alreadyac: "Hesabınız var mı?"
+      alreadyac: "Hesabınız var mı?",
+      register: "Kayıt Ol",
+      save: "Kaydet",
+      cancel: "Vazgeç",
+      degergir: "değerini girin",
+      columnType: "Property Type",
+      please: "Lütfen tüm gerekli alanları doldurunuz."
     }
   }
 })
 const app = createApp(App);
 
 app.config.globalProperties.$axios = Axios;
+
 
 app
 .use(i18n)

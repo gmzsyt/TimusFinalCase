@@ -1,51 +1,46 @@
 <template>
   <v-dialog v-model="dialog" max-width="500px">
     <v-card>
-      <v-card-title>Edit Factory Detail</v-card-title>
+      <v-card-title>{{$t('edit')}}</v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid">
           <v-container>
-            <v-row v-for="(column, index) in columns" :key="index">
-              <v-col v-if="column !== 'date_range'">
-                <v-text-field
-                  :label="`${column} değerini girin`"
-                  v-model="columnValues[column]"
-                  :rules="[v => validateFieldType(v, column)]"
-                  :disabled="column === 'id'"
-                ></v-text-field>
-              </v-col>
-              <v-col v-else>
-                <v-row>
-                  <v-col>
-                    <v-text-field
-                      label="Start Date"
-                      v-model="columnValues.start_date"
-                      :rules="[v => validateStartDate(v)]"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col>
-                    <v-text-field
-                      label="End Date"
-                      v-model="columnValues.end_date"
-                      :rules="[v => validateEndDate(v)]"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
+             <v-row v-for="(column, index) in columns" :key="index">
+    <v-col v-if="column.dataType !== 'daterange'">
+      <v-text-field
+        :label="`${column.columnName} ${$t('degergir')}`"
+        v-model="columnValues[column.columnName]"
+        :rules="[v => validateFieldType(v, column)]"
+        :disabled="column.columnName === 'id' || column.columnName === 'factory_id'"
+      ></v-text-field>
+    </v-col>
+    <v-col v-else>
+      <!-- Separate text fields for start date and end date -->
+      <v-text-field
+        :label="`${$t('start_date')} ${$t('degergir')}`"
+        v-model="columnValues['startDate']"
+        :rules="[v => validateDateRange(columnValues['startDate'], columnValues['endDate'])]"
+      ></v-text-field>
+      <v-text-field
+        :label="`${$t('end_date')} ${$t('degergir')}`"
+        v-model="columnValues['endDate']"
+        :rules="[v => validateDateRange(columnValues['startDate'], columnValues['endDate'])]"
+      ></v-text-field>
+    </v-col>
+  </v-row>
           </v-container>
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="closeModal">Cancel</v-btn>
-        <v-btn @click="saveChanges" color="primary">Save</v-btn>
+        <v-btn @click="closeModal">{{$t("cancel")}}</v-btn>
+        <v-btn @click="saveChanges" :color="'#435334'">{{$t("save")}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
-
 <script>
+import useDetailStore from '@/stores/factoryDetailStore';
 import useUserStore from '@/stores/userStore';
 import axios from 'axios';
 
@@ -58,82 +53,150 @@ export default {
       dialog: false,
       columns: [],
       columnValues: {},
-      valid: false, 
+      valid: false,
+      userStore: useUserStore(),
+      factoryDetailStore: useDetailStore(),
     };
   },
-  watch: {
-    factoryDetail: {
-      immediate: true,
-      handler(newFactoryDetail) {
-        this.columns = newFactoryDetail ? Object.keys(newFactoryDetail) : [];
-        this.columnValues = { ...newFactoryDetail };
-      },
-    },
-  },
   methods: {
+    async fetchColumnMetadata() {
+      const token = this.userStore.getToken;
+      try {
+        const response = await axios.get(
+          'http://localhost:3000/api/factoryDetail/type/check/getColumnMetadataD',
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        this.columns = response.data;
+      } catch (error) {
+        console.error('Error fetching column metadata:', error);
+      }
+    },
+
     closeModal() {
       this.dialog = false;
     },
 
     validateFieldType(value, column) {
-      if (column === 'age') {
-        return /^[0-9]+$/.test(value) || 'Lütfen geçerli bir yaş girin.';
+  const columnMetadata = this.columns.find((c) => c.columnName === column.columnName);
+  if (!columnMetadata) {
+    return 'Sütun metadatası bulunamadı.';
+  }
+
+  const dataType = columnMetadata.dataType;
+
+  switch (dataType) {
+    case 'integer':
+      if (/^\d+$/.test(value)) {
+        let integerValue = parseInt(value, 10);
+        return true;
+      } else {
+        return 'Geçerli bir tamsayı giriniz.';
       }
+    case 'text':
+      // Text alanları için boş olma koşulunu kaldır
       return true;
-    },
 
-    validateStartDate(value) {
-      return value ? true : 'Başlangıç tarihi zorunludur.';
-    },
-
-    validateEndDate(value) {
-      return value ? true : 'Bitiş tarihi zorunludur.';
-    },
-
-    async saveChanges() {
-      const userStore = useUserStore();
-      const token = userStore.getToken;
-      const factoryDetailID = this.factoryDetail.id;
-
-      try {
-        const formValid = await this.$refs.form.validate();
-        if (formValid) {
-          if (this.columns.includes('date_range')) {
-        const [startDate, endDate] = this.columnValues.date_range
-          .replace("[", "")
-          .replace(")", "")
-          .split(",");
-          
-        this.columnValues.start_date = startDate.trim();
-        this.columnValues.end_date = endDate.trim();
+      case 'boolean':
+          if (value === true || value === 'true' || value === false || value === 'false') {
+          return true;
+      } else {
+        return 'Geçerli true veya false değerlerinden birini giriniz';
       }
-   
+
+    case 'date':
+      // Date alanları için boş olma koşulunu kaldır
+      return true;
+
+    default:
+      return true;
+  }
+}
+,
+    validateDateRange(startDate, endDate) {
+  try {
+    if (startDate && endDate) {
+      const startDateObj = new Date(startDate);
+      const endDateObj = new Date(endDate);
+
+      if (!(startDateObj instanceof Date && !isNaN(startDateObj) && endDateObj instanceof Date && !isNaN(endDateObj))) {
+        throw new Error('Geçerli bir tarih aralığı giriniz.');
+      }
+
+      if (startDateObj >= endDateObj) {
+        throw new Error('Başlangıç tarihi, bitiş tarihinden önce olmalıdır.');
+      }
+    }
+
+    return true;
+  } catch (error) {
+    return error.message;
+  }
+},
+
+
+
+  async saveChanges() {
+  const token = this.userStore.getToken;
+  const factoryDetailID = this.factoryDetail.id;
+
+  try {
+    const formValid = await this.$refs.form.validate();
+    if (formValid) {
           const requestData = {
             ...this.columnValues,
             id: factoryDetailID,
           };
 
-          const response = await axios.put(
-            `http://localhost:3000/api/factoryDetail/${factoryDetailID}`,
-            requestData,
-            {
-              headers: {
-                authorization: `Bearer ${token}`,
-              },
-            }
-          );
 
-          if (response.status === 200) {
-            this.$emit('factoryDetail-updated', { id: factoryDetailID, updatedValues: this.columnValues });
-            this.closeModal();
-          } else {
-            console.error('Failed to update factory detail. Status:', response.status);
-          }
+      for (const column of this.columns) {
+        if (column.dataType === 'daterange') {
+          delete requestData[column.columnName];
         }
-      } catch (error) {
-        console.error('Error saving changes:', error);
       }
+
+      requestData.id = factoryDetailID;
+
+      const response = await axios.put(
+        `http://localhost:3000/api/factoryDetail/${factoryDetailID}`,
+        requestData,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        this.$emit('factoryDetail-updated', {
+          id: factoryDetailID,
+          updatedValues: this.columnValues,
+        });
+        this.factoryDetailStore.getAllFactoryDetail();
+        this.closeModal();
+      } else {
+        console.error('Fabrika güncellenirken hata oluştu. Durum:', response.status);
+      }
+    }
+  } catch (error) {
+    console.error('Değişiklikler kaydedilirken hata oluştu:', error);
+  }
+},
+
+
+  },
+
+watch: {
+  factoryDetail: {
+    immediate: true,
+    async handler(newFactory) {
+      await this.fetchColumnMetadata();
+      this.columnValues = { ...newFactory };
     },
   },
+},
 };
 </script>

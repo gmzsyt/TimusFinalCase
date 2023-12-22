@@ -162,5 +162,17 @@ async update(id: number, factoryDetailUpdateDTO: FactoryDetailUpdateDTO): Promis
     return columnNames;
   }
 
+   async getColumnMetadata(): Promise<{ columnName: string, dataType: string }[]> {
+    const tableName = "factory_list"
+    const queryResult = await this.pool.query('SELECT column_name, data_type FROM information_schema.columns WHERE table_name = $1', [tableName]);
+    const columnMetadata = queryResult.rows.map((row: any) => ({
+        columnName: row.column_name,
+        dataType: row.data_type,
+    }));
+    console.log('Query Result:', queryResult);
+
+    return columnMetadata;
+}
+
  
     }

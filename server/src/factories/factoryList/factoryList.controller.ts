@@ -74,4 +74,15 @@ async getColumnNames(): Promise<string[]> {
     throw new Error('An error occurred while fetching column names.');
   }
 }
+
+@Get('type/check/getColumnMetadata')
+async getColumnMetadata(): Promise<{ columnName: string; dataType: string }[]> {
+  try {
+    const columnMetadata = await this.factoryListService.getColumnMetadata();
+    return columnMetadata;
+  } catch (error) {
+    console.error('An error occurred while fetching column metadata:', error);
+    throw new Error('An error occurred while fetching column metadata.');
+  }
+}
 }

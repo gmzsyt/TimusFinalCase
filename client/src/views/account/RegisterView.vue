@@ -1,6 +1,7 @@
 <template>
   <div class="d-flex align-center justify-center" style="height: 100vh">
     <v-sheet width="400" class="mx-auto">
+      <h2 class="text-h5 text-center" style="color: #9EB384 ;margin-bottom: 30px; font-weight: bold;"> {{$t('register')}}</h2> 
       <v-form @submit.prevent="register">
         <v-text-field v-model="user.username" :error-messages="usernameErrors" label="User Name" outlined
           @input="validateUsername"></v-text-field>
@@ -16,11 +17,11 @@
           <v-icon>mdi-translate</v-icon>
         </v-btn>
 
-        <v-btn type="submit" color="primary" block class="mt-4">{{ $t('sigin') }}</v-btn>
+        <v-btn type="submit" color=#9EB384 block class="mt-4" style="font-weight:00;">{{ $t('register') }}</v-btn>
       </v-form>
 
       <div class="mt-4">
-        <p class="text-body-2">{{$t('alreadyac')}}<router-link to="/login">  {{$t('login')}}</router-link></p>
+                <p class="text-body-2">{{$t('alreadyac')}}<router-link to="/login"> {{$t('login')}}</router-link></p>
       </div>
     </v-sheet>
   </div>
@@ -97,7 +98,7 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://localhost:3000/api/auth/register', this.user);
+        const response = await axios.post('/api/auth/register', this.user);
         this.$router.push('/login');
       } catch (error) {
         this.usernameErrors = error.response.data.message.username || [];

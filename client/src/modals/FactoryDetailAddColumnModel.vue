@@ -9,7 +9,7 @@
             <v-row v-if="!valid">
               <v-col>
                 <v-alert type="error" dense outlined>
-                  Please fill out all required fields.
+                  {{$t('please')}}
                 </v-alert>
               </v-col>
             </v-row>
@@ -48,7 +48,7 @@ import useUserStore from "../stores/userStore";
           columnName: '',
           columnType: null,
         },
-        columnTypes: ['varchar(255)', 'Number', 'Date'],
+        columnTypes: ['varchar(255)', 'Number', 'Date','Boolean'],
       };
     },
     methods: {
