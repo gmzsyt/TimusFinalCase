@@ -99,7 +99,7 @@ The project has been successfully built and deployed to production. You can acce
 
 ### Deployment Details:
 
-- **URL:** [https://final-case-server.onrender.com/](https://final-case-server.onrender.com/)
+- **URL:** [https://final-case-server.onrender.com/]([https://final-case-server.onrender.com/](https://timus-final-case-ml6o.vercel.app/))
 
 Your suggestions and feedback are important to me.
 
