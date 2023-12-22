@@ -95,7 +95,7 @@ PG_PASSWORD='XIRAHZz35hWw'
 
 ## Deploying the Project
 
-The project has been successfully built and deployed to production. You can access the live application [here](https://final-case-server.onrender.com/).
+The project has been successfully built and deployed to production. You can access the live application [here]([https://final-case-server.onrender.com/](https://timus-final-case-ml6o.vercel.app/)).
 
 ### Deployment Details:
 
