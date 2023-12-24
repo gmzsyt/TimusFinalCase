@@ -103,4 +103,24 @@ export class ElasticsearchService {
       throw error; 
     }
   }
+   async createIndexIfNotExists(): Promise<void> {
+  try {
+    const indexExists = await this.elasticsearchService.indices.exists({
+      index: 'users',
+    });
+
+    if (!indexExists) {
+      await this.elasticsearchService.indices.create({
+        index: 'users',
+        body: {
+          // İndeks ayarları ve mapping bilgilerini buraya ekleyin
+        },
+      });
+    }
+  } catch (error) {
+    console.error('Error creating index:', error);
+    throw error;
+  }
+}
+
 }

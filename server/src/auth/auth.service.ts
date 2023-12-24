@@ -10,7 +10,19 @@ export class AuthService {
   constructor(
     private readonly elasticsearchService: ElasticsearchService,
     private readonly jwtService: JwtService, 
-  ) {}
+  ){
+    this.initialize();
+  }
+
+  private async initialize(): Promise<void> {
+    try {
+      await this.elasticsearchService.createIndexIfNotExists();
+      console.log('Index created or already exists.');
+    } catch (error) {
+      console.error('Error during initialization:', error);
+    }
+  }
+  
 
   async login(userLoginDTO: UserLoginDTO): Promise<any> {
     try {
@@ -178,4 +190,5 @@ async updateUser(currentUsername: string, userUpdateDTO: UserRegisterDTO): Promi
       throw error;
     }
   }
+  
 }
