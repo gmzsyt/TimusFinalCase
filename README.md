@@ -93,10 +93,6 @@ PG_PASSWORD='XIRAHZz35hWw'
 # PG_PORT=5432
 ```
 
-## Deploying the Project
-
-The project has been successfully built and deployed to production. You can access the live application [Deployment Details](https://timus-final-case-ml6o.vercel.app/)
-
 
 Your suggestions and feedback are important to me.
 
