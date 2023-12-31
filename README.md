@@ -14,7 +14,7 @@ The project consists of two main parts:
 
 1. **Node.js Server:** Located in the `server` folder. The server-side is used to connect to Timus APIs, manage user sessions, process necessary data, and interact with Elasticsearch.
 
-   - **API Connection:** Modules in the `server/api` folder connect to Timus APIs.
+   - **API Connection:** Modules in the `server/api` folder connect to APIs.
    - **User Management:** User registration, login, and logout processes are managed in the `server/auth` folder.
    - **Data Processing:** User solutions, questions, and other data are processed in the `server/data` folder.
    - **Elasticsearch Integration:** Modules in the `server/elasticsearch` folder interact with Elasticsearch.
